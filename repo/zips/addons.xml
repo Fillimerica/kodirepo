@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addons><addon id="plugin.groupfavourites.tjf" version="0.0.1" name="Favourite Groups by TJF" provider-name="Fillimerica">
+<requires>
+  <import addon="xbmc.python" version="3.0.1" />
+  <import addon="script.module.web-pdb" version="1.0" />
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>executable audio video image</provides>
+</extension>
+<extension point="kodi.context.item">
+  <menu id="kodi.core.main">
+    <item library="contextitem.py" args="add">
+      <label>30100</label>
+      <visible>true</visible>
+    </item>
+  </menu>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en_GB">Favourite Groups Manager</summary>
+  <description lang="en_GB">Favourite Groups Manager and Launcher for Kodi</description>
+  <disclaimer lang="en_GB" />
+  <license>GPL-3.0-only	</license>
+  <assets>
+    <icon>resources/images/icon.png</icon>
+    <fanart>resources/images/fanart.jpg</fanart>
+  </assets>
+  <news />
+</extension>
+</addon><addon id="repository.tjfrepo" name="TJF Repository" version="1.0.0" provider-name="Fillimerica">
+    <extension point="xbmc.addon.repository" name="TJF Repository">
+        <dir>
+            <info compressed="false">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/</datadir>
+        </dir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary>TJF Repository</summary>
+        <description>Useful Kodi Addons from TJF</description>
+        <disclaimer />
+        <platform>all</platform>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon></addons>

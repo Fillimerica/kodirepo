@@ -1,0 +1,120 @@
+# Kodi Media Center language file
+# Addon Name: Favourite Groups by TJF
+# Addon id: plugin.groupfavourites.tjf
+# Addon Provider: Fillimerica
+msgid ""
+msgstr ""
+
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: English\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+### Start of the contextitem localization.
+
+#. Context menu item for adding an item
+msgctxt "#30100"
+msgid "Add to FavouriteGroup"
+msgstr ""
+
+#. Context menu item for removing an item
+msgctxt "#30101"
+msgid "Remove from FavouriteGroup"
+msgstr ""
+
+#. New group creation name.
+msgctxt "#30102"
+msgid "<NEW GROUP>"
+msgstr ""
+
+#. Group selection heading
+msgctxt "#30103"
+msgid "Select Groups for item:"
+msgstr ""
+
+#. Add new group name prompt
+msgctxt "#30104"
+msgid "Desired Group Name"
+msgstr ""
+
+#. Add new group missing name prompt
+msgctxt "#30105"
+msgid "No Group Name Entered"
+msgstr ""
+
+#. Add new group missing name message
+msgctxt "#30106"
+msgid "Are you sure you want to cancel creating a new group?"
+msgstr ""
+
+#. Add new group invalid group name prompt
+msgctxt "#30107"
+msgid "Invalid Group"
+msgstr ""
+
+#. Add new group invalid group name message pt 1
+msgctxt "#30108"
+msgid "The entered group name contains invalid characters."
+msgstr ""
+
+#. Add new group invalid group name message pt 2
+msgctxt "#30109"
+msgid "Group Name"
+msgstr ""
+
+#. Add new group invalid group name message pt 3
+msgctxt "#30110"
+msgid "Do you want to retry?"
+msgstr ""
+
+#. Invalid tag error message in group favourites xml file
+msgctxt "#30111"
+msgid "Invalid root tag in group favorites file. Tag found:"
+msgstr ""
+
+### This is the end of the contextitem localization.
+
+### Start of the main localization section.
+
+#. Initial plugin startup when no groups have been defined warning message
+msgctxt "#30200"
+msgid "There are no groups configured for this addin.\nUse the context menu to add items to a named favorites group, then return here to select it."
+msgstr ""
+
+#. Group deletion context menu text
+msgctxt "#30201"
+msgid "Delete this Group"
+msgstr ""
+
+#. Group deletion function confirmation prompt
+msgctxt "#30202"
+msgid "Group Deletion"
+msgstr ""
+
+#. Group deletion function confirmation text
+msgctxt "#30203"
+msgid "Are you sure you want delete this entire group?"
+msgstr ""
+
+#. Item deletion function header
+msgctxt "#30204"
+msgid "Item Deletion"
+msgstr ""
+
+#. Item deletion function prompt text pt 2
+msgctxt "#30205"
+msgid "Item Name"
+msgstr ""
+
+#. Item deletion function prompt text pt 3
+msgctxt "#30206"
+msgid "Are you sure you want delete this item from this group?"
+msgstr ""
+
+#. Item deletion function unable to locate item text
+msgctxt "#30207"
+msgid "Unable to locate item to delete in group list. Nothing removed!"
+msgstr ""
+

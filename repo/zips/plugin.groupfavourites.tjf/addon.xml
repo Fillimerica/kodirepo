@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.groupfavourites.tjf" version="0.0.1" name="Favourite Groups by TJF" provider-name="Fillimerica">
+<requires>
+  <import addon="xbmc.python" version="3.0.1"/>
+  <import addon="script.module.web-pdb" version="1.0"/>
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>executable audio video image</provides>
+</extension>
+<extension point="kodi.context.item">
+  <menu id="kodi.core.main">
+    <item library="contextitem.py" args="add">
+      <label>30100</label>
+      <visible>true</visible>
+    </item>
+  </menu>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en_GB">Favourite Groups Manager</summary>
+  <description lang="en_GB">Favourite Groups Manager and Launcher for Kodi</description>
+  <disclaimer lang="en_GB"></disclaimer>
+  <license>GPL-3.0-only	</license>
+  <assets>
+    <icon>resources/images/icon.png</icon>
+    <fanart>resources/images/fanart.jpg</fanart>
+  </assets>
+  <news></news>
+</extension>
+</addon>
