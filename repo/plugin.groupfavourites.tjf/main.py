@@ -29,7 +29,8 @@ import xbmcgui
 import xbmcvfs
 import xbmcplugin
 
-import web_pdb
+# Remote debugging module.
+#import web_pdb
 
 # Import the project constants and globals for use within the module.
 from constants import *

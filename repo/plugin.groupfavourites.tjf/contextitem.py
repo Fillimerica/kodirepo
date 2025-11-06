@@ -7,7 +7,8 @@ import xbmcvfs
 import xml.etree.ElementTree as ET
 import re
 
-import web_pdb
+# Remote debugging module.
+#import web_pdb
 
 # Import the project constants and globals for use within the module.
 from constants import *
@@ -136,7 +137,7 @@ def router(paramstring):
     """
 
     if paramstring == 'add':
-        web_pdb.set_trace()
+        #web_pdb.set_trace()
         # Perform the add context menu action.
         i_label=sys.listitem.getLabel()
         folders,files=xbmcvfs.listdir(DATA_DIR)
