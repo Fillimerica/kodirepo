@@ -15,7 +15,6 @@ from constants import *
 if IsWebPDB:
     import web_pdb
 
-
 # Base XML string for new group
 XML_BASE="""
 <favourites>
@@ -127,6 +126,9 @@ def CreateNewGroup():
                     return ""
             break
     # Group name specified and is valid.
+    # Make sure the addon data folder exists, create it if it does not.
+    if not xbmcvfs.exists(DATA_DIR+"/"):
+        xbmcvfs.mkdirs(DATA_DIR)
     # Create the base XML file from the group name
     GroupFQFN=xbmcvfs.translatePath(DATA_DIR)+'/'+fnameraw+'.xml'
     xmltree=ET.ElementTree(ET.fromstring(XML_BASE))
@@ -144,7 +146,6 @@ def router(paramstring):
     """
 
     if paramstring == 'add':
-        web_pdb.set_trace()
         # Perform the add context menu action.
         i_label=xbmcgui.Dialog().input(localize(30113),sys.listitem.getLabel())
         if i_label=="":
