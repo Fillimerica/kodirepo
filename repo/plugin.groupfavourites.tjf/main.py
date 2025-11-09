@@ -64,6 +64,7 @@ def list_root():
     from the addon data folder.
     """
     if IsWebPDB:
+        pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
     folders,files=xbmcvfs.listdir(DATA_DIR)
@@ -106,6 +107,7 @@ def groupsel(groupname):
     Load the selected group and build the virtual folder.
     """
     if IsWebPDB:
+        pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
     # Set plugin category. It is displayed in some skins as the name
@@ -216,6 +218,7 @@ def RenameItem(groupname,itemname,itemindex):
     The user is prompted for a new item name to use.
     """
     if IsWebPDB:
+        pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
     # Open and read the current group.
@@ -259,6 +262,7 @@ def DeleteItem(groupname,itemname,itemindex):
     A confirmation dialog is shown prior to deletion.
     """
     if IsWebPDB:
+        pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
     # Open and read the current group.
@@ -302,6 +306,7 @@ def router(paramstring):
     """
 
     if IsWebPDB:
+        pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
     # Parse a URL-encoded paramstring to the dictionary of
