@@ -114,7 +114,7 @@ def groupsel(groupname):
     # of the current section.
     xbmcplugin.setPluginCategory(HANDLE, "Favorites Group: "+groupname)
     xbmcplugin.setProperty(HANDLE,'FolderName','Root')
-    xbmcplugin.setContent(HANDLE, 'mixed')
+    xbmcplugin.setContent(HANDLE, 'videos')
  
     # Open and read the desired list of media/plugin objects.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
