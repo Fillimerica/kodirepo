@@ -104,6 +104,10 @@ msgctxt "#30117"
 msgid "Rename Item Canceled"
 msgstr ""
 
+#. Notification prompt after an item has been added to selected groups.
+msgctxt "#30118"
+msgid "sucessfully added."
+msgstr ""
 
 ### This is the end of the contextitem localization.
 

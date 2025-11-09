@@ -317,21 +317,24 @@ def router(paramstring):
         # If the plugin is called from Kodi UI without any parameters,
         # display the list of Groups
         list_root()
-    elif params['action'] == 'invoke':
+    elif params.get('action') == 'invoke':
         # Try to run the embedded command.
         xbmc.executebuiltin(params['data'])
-    elif params['action'] == 'groupsel':
+    elif params.get('action') == 'groupsel':
         # Open the selected group and populate the virtual directory.
         groupsel(params['data'])
-    elif params['action'] == 'groupdel':
+    elif params.get('action') == 'groupdel':
         # Remove the selected item from the group it is in.
         DeleteGroup(params['data'])
-    elif params['action'] == 'itemrename':
+    elif params.get('action') == 'itemrename':
         # Rename the selected item in the group.
         RenameItem(params['groupname'],params['itemname'],params['itemindex'])
-    elif params['action'] == 'itemdel':
+    elif params.get('action') == 'itemdel':
         # Remove the selected item from the group it is in.
         DeleteItem(params['groupname'],params['itemname'],params['itemindex'])
+    elif not (params.get('content_type') == None):
+        # Default in some skins when called from a content screen.
+        list_root()
 
     else:
         # If the provided paramstring does not contain a supported action

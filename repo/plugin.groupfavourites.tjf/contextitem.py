@@ -166,6 +166,8 @@ def router(paramstring):
                         SaveItem(GroupName,NewElement)
                 else:
                     SaveItem(tgroup[sel],NewElement)
+            # Provide feeback to user once item has been sucessfully added to the group(s)
+            xbmcgui.Dialog().notification(localize(30114),i_label+" "+localize(30118))
         else:
             # User canceled, display notification and exit without adding.
             xbmcgui.Dialog().notification(localize(30114),localize(30115))
