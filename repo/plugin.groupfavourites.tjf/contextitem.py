@@ -6,12 +6,15 @@ import xbmcgui
 import xbmcvfs
 import xml.etree.ElementTree as ET
 import re
-
-# Remote debugging module.
-#import web_pdb
+import urllib.parse as urlparse
 
 # Import the project constants and globals for use within the module.
 from constants import *
+
+# Remote debugging module. IsWebPDB determines if it is installed on the system.
+if IsWebPDB:
+    import web_pdb
+
 
 # Base XML string for new group
 XML_BASE="""
@@ -19,7 +22,7 @@ XML_BASE="""
 </favourites>
 """
 
-def CreateElement():
+def CreateElement(pItemName):
     """
     This function builds the complete xml entry for the current listitem.
     Called once even if multiple xml files will be updated.
@@ -28,7 +31,7 @@ def CreateElement():
     # Define the new element to add
     NewElement=ET.Element('favourite')
     NewElement.tail="\n"    # Inject xml newline formatting for pre-3.9 python
-    NewElement.set('name',sys.listitem.getLabel())
+    NewElement.set('name',pItemName)
 
     if sys.listitem.isFolder():
         NewElement.set('isFolder','True')
@@ -43,33 +46,37 @@ def CreateElement():
         #NewElement.set('thumb',iArt)
         NewElement.set('poster',iArt)
         
-    # Determine the media type and the correct endpoint if not a folder.
-    if sys.listitem.isFolder():
-        NewElement.text=sys.listitem.getPath()
-        NewElement.set('mediatype','folder')
+    # Determine the media type and the correct endpoint.
+    l_Path=sys.listitem.getPath()
+    l_folder=sys.listitem.isFolder()
+    nWindowID=xbmcgui.getCurrentWindowId()
+    
+    if l_Path[0:9]=="addons://":
+        # IsAddon?
+        mType='addon'
+        mPath=':RunAddon("'+l_Path.rsplit('/')[-1]+'")'
+    elif l_Path[0:13]=="favourites://":
+        # IsFavourites link?
+        mType='favourites'
+        # Discovered that some times the path comes through as quoted 
+        # and that messes up the kodi function call formatting.
+        mPath=':'+urlparse.unquote(l_Path[13:])
+    elif l_folder:
+        # Media group or playlist folder.
+        mType='folder_media'
+        mPath=f':ActivateWindow({nWindowID},"{l_Path}",return)'
+    elif not sys.listitem.getPictureInfoTag().getResolution()=="":
+        # IsPicture?
+        mType='picture'
+        mPath=f':ShowPicture("{l_Path}")'
     else:
-        # Endpoint. Determine type and get absolute playback path.
-        # IsVideo?
-        mType=sys.listitem.getVideoInfoTag().getMediaType()
-        mPath=sys.listitem.getPath()
-        if not mType=="":
-            NewElement.text=sys.listitem.getVideoInfoTag().getFilenameAndPath()
-            NewElement.set('mediatype',mType)
-        elif not sys.listitem.getPictureInfoTag().getResolution()=="":
-            # IsPicture?
-            mType='picture'
-            NewElement.text=':ShowPicture("'+mPath+'")'
-            NewElement.set('mediatype',mType)
-        elif mPath[0:9]=="addons://":
-            # IsAddon?
-            mType='addon'
-            NewElement.text=':RunAddon("'+mPath.rsplit('/')[-1]+'")'
-            NewElement.set('mediatype',mType)
-        else:
-            # Unknown Type
-            mType='unknown'
-            NewElement.text=sys.listitem.getPath()
-            NewElement.set('mediatype',mType)
+        # Regular Media Endpoint Song/Video
+        mType='mediaendpoint'
+        mPath=f':PlayMedia("{l_Path}")'
+
+    # Add the item details to the current element.
+    NewElement.set('mediatype',mType)
+    NewElement.text=mPath
     return NewElement
     
 
@@ -137,15 +144,19 @@ def router(paramstring):
     """
 
     if paramstring == 'add':
-        #web_pdb.set_trace()
+        web_pdb.set_trace()
         # Perform the add context menu action.
-        i_label=sys.listitem.getLabel()
+        i_label=xbmcgui.Dialog().input(localize(30113),sys.listitem.getLabel())
+        if i_label=="":
+            # User canceled, display notification and exit without adding.
+            xbmcgui.Dialog().notification(localize(30114),localize(30115))
+            return False
         folders,files=xbmcvfs.listdir(DATA_DIR)
         tgroup=[localize(30102)]+[item.rsplit(".",1)[0] for item in files if item.endswith(".xml")]
         fnames=xbmcgui.Dialog().multiselect(localize(30103)+" "+i_label,tgroup)
         # Check if the user clicked ok and process the selections
         if fnames is not None:
-            NewElement=CreateElement()
+            NewElement=CreateElement(i_label)
             for sel in fnames:
                 if tgroup[sel]==localize(30102):
                     # Adding a new named group.
@@ -154,6 +165,11 @@ def router(paramstring):
                         SaveItem(GroupName,NewElement)
                 else:
                     SaveItem(tgroup[sel],NewElement)
+        else:
+            # User canceled, display notification and exit without adding.
+            xbmcgui.Dialog().notification(localize(30114),localize(30115))
+            return False
+
     else:
         # If the provided paramstring does not contain a supported action
         # we raise an exception. This helps to catch coding errors,

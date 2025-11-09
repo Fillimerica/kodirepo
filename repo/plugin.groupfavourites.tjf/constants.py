@@ -1,4 +1,4 @@
-# Constants and globals file for the SubFavorites Plugin
+# Constants and globals file for the GroupFavorites Plugin
 # V1.0 - October 2025
 
 import sys
@@ -16,3 +16,10 @@ ADDON_NAME=Addon().getAddonInfo('name')
 
 # String localization shortcut.
 localize = Addon().getLocalizedString
+
+# Check to see if the debugger is installed as an optional dependency.
+try:
+    xbmcaddon.Addon("script.module.web-pdb")
+    IsWebPDB=True
+except:
+    IsWebPDB=False

@@ -74,6 +74,37 @@ msgctxt "#30111"
 msgid "Invalid root tag in group favorites file. Tag found:"
 msgstr ""
 
+#. Rename item context menu text.
+msgctxt "#30112"
+msgid "Rename Item"
+msgstr ""
+
+#. Item name prompt for setting or changing the item name.
+msgctxt "#30113"
+msgid "Desired Item Name"
+msgstr ""
+
+#. User cancelled add item to GroupFavorite at item name notification header.
+msgctxt "#30114"
+msgid "GroupFavourites Add Item"
+msgstr ""
+
+#. User cancelled add item to GroupFavorite at item name notification line #2
+msgctxt "#30115"
+msgid "User canceled adding item to GroupFavourites"
+msgstr ""
+
+#. Informational notification header.
+msgctxt "#30116"
+msgid "GroupFavorites Item Control"
+msgstr ""
+
+#. Rename item user cancelled message.
+msgctxt "#30117"
+msgid "Rename Item Canceled"
+msgstr ""
+
+
 ### This is the end of the contextitem localization.
 
 ### Start of the main localization section.

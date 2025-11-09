@@ -29,9 +29,6 @@ import xbmcgui
 import xbmcvfs
 import xbmcplugin
 
-# Remote debugging module.
-#import web_pdb
-
 # Import the project constants and globals for use within the module.
 from constants import *
 
@@ -42,6 +39,10 @@ from constants import *
 URL = sys.argv[0]
 # Get a plugin handle as an integer number.
 HANDLE = int(sys.argv[1])
+
+# Remote debugging module. IsWebPDB determines if it is installed on the system.
+if IsWebPDB:
+    import web_pdb
 
 def validfilename(genstring):
     return "".join(x for x in genstring if x.isalnum())
@@ -62,7 +63,8 @@ def list_root():
     Returns a virtual directory that lists the available Group xml files 
     from the addon data folder.
     """
-    #web_pdb.set_trace()
+    if IsWebPDB:
+        #web_pdb.set_trace()
 
     folders,files=xbmcvfs.listdir(DATA_DIR)
     tgroup=[item.rsplit(".",1)[0] for item in files if item.endswith(".xml")]
@@ -103,14 +105,14 @@ def groupsel(groupname):
     """
     Load the selected group and build the virtual folder.
     """
-
-    #web_pdb.set_trace()
+    if IsWebPDB:
+        #web_pdb.set_trace()
 
     # Set plugin category. It is displayed in some skins as the name
     # of the current section.
     xbmcplugin.setPluginCategory(HANDLE, "Favorites Group: "+groupname)
     xbmcplugin.setProperty(HANDLE,'FolderName','Root')
-    xbmcplugin.setContent(HANDLE, 'favourites')
+    xbmcplugin.setContent(HANDLE, 'mixed')
  
     # Open and read the desired list of media/plugin objects.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
@@ -140,7 +142,10 @@ def groupsel(groupname):
         # info_tag.setMediaType('video')
         # info_tag.setTitle(t_title)
         # is_folder = True means that this item opens a sub-list of lower level items.
-        if row.get('isFolder')=='False':
+        # In this implementation, all entries are endpoints and the url command handles the item.
+        # so all entries are set to isFolder=False right now.
+        #if row.get('isFolder')=='False':
+        if True:
             is_folder=False
             list_item.setProperty('IsPlayable','true')
         else:
@@ -155,15 +160,27 @@ def groupsel(groupname):
         else:
             url=row.text
         
+        # Allow renaming of item in the Group.
+        # Build a context menu link for this item so it can be renamed in the group.
+        cMenuURLRen=get_url(
+            action='itemrename', 
+            itemname=row.text,
+            itemindex=index,
+            groupname=groupname
+            )
+
         # Allow removal of item from the Group.
         # Build a context menu link for this item so it can be removed from the group.
-        cMenuURL=get_url(
+        cMenuURLDel=get_url(
             action='itemdel', 
             itemname=row.text,
             itemindex=index,
             groupname=groupname
             )
-        list_item.addContextMenuItems([ (localize(30101),"RunPlugin({})".format(cMenuURL))])
+        list_item.addContextMenuItems([
+        (localize(30112),"RunPlugin({})".format(cMenuURLRen)),
+        (localize(30101),"RunPlugin({})".format(cMenuURLDel))
+        ])
 
         # Add our item to the Kodi virtual folder listing.
         xbmcplugin.addDirectoryItem(HANDLE, url, list_item, is_folder)
@@ -193,13 +210,57 @@ def DeleteGroup(groupname):
         return True
     return False
 
+def RenameItem(groupname,itemname,itemindex):
+    """
+    This function renames the listitem from in the current group.
+    The user is prompted for a new item name to use.
+    """
+    if IsWebPDB:
+        #web_pdb.set_trace()
+
+    # Open and read the current group.
+    GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
+    xmltree=ET.parse(GroupFQFN)
+    xmlroot=xmltree.getroot()
+    # Verify the root tag is valid.
+    if not xmlroot.tag=='favourites':
+        raise ValueError(localize(30111)+f' {xmlroot.tag}!')
+        return -1
+    for index,row in enumerate(xmlroot.findall('favourite')):
+        if (row.text==itemname) and (index==int(itemindex)):
+            # Matching item located, prompt the user for the new item name.
+            i_label=xbmcgui.Dialog().input(localize(30113),row.get('name'))
+            if i_label=="":
+                # User canceled, display notification and exit without renaming.
+                xbmcgui.Dialog().notification(localize(30116),localize(30117))
+                return -2
+            else:
+                # Update the name key in the current row.
+                row.set('name',i_label)
+                break
+    else:
+        raise ValueError(localize(30207))
+        return -1
+
+    # Item sucessfully removed from the tree, write out the modified group xml.
+    xmltree.write(GroupFQFN)
+    
+    # Call group load function to rebuild the kodi listing.
+    groupsel(groupname)
+    
+    # Tell Kodi to refresh the virtual directory container after it has been rebuilt.
+    xbmc.executebuiltin('Container.Refresh')
+            
+    return True
 
 def DeleteItem(groupname,itemname,itemindex):
     """
     This function deletes the selected listitem from the current group.
     A confirmation dialog is shown prior to deletion.
     """
-    #web_pdb.set_trace()
+    if IsWebPDB:
+        #web_pdb.set_trace()
+
     # Open and read the current group.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
     xmltree=ET.parse(GroupFQFN)
@@ -240,7 +301,8 @@ def router(paramstring):
     :type paramstring: str
     """
 
-    #web_pdb.set_trace()
+    if IsWebPDB:
+        #web_pdb.set_trace()
 
     # Parse a URL-encoded paramstring to the dictionary of
     # {<parameter>: <value>} elements
@@ -259,6 +321,9 @@ def router(paramstring):
     elif params['action'] == 'groupdel':
         # Remove the selected item from the group it is in.
         DeleteGroup(params['data'])
+    elif params['action'] == 'itemrename':
+        # Rename the selected item in the group.
+        RenameItem(params['groupname'],params['itemname'],params['itemindex'])
     elif params['action'] == 'itemdel':
         # Remove the selected item from the group it is in.
         DeleteItem(params['groupname'],params['itemname'],params['itemindex'])
