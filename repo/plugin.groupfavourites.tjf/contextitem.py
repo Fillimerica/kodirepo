@@ -146,7 +146,7 @@ def router(paramstring):
     """
     if IsWebPDB:
         pass # needed in case the trace line is commented out
-        web_pdb.set_trace()
+        #web_pdb.set_trace()
 
     if paramstring == 'add':
         # Perform the add context menu action.
