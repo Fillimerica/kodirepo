@@ -109,6 +109,16 @@ msgctxt "#30118"
 msgid "sucessfully added."
 msgstr ""
 
+#. User selected no groups but pressed ok. Heading.
+msgctxt "#30119"
+msgid "Group Selection Error"
+msgstr ""
+
+#. User selected no groups but pressed ok. Message Text.
+msgctxt "#30120"
+msgid "Would you like to return to the Group Selection dialog?"
+msgstr ""
+
 ### This is the end of the contextitem localization.
 
 ### Start of the main localization section.

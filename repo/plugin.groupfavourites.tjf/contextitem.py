@@ -144,6 +144,9 @@ def router(paramstring):
     "add" - add the selected entry into a SubFavourite group.
     :type paramstring: str
     """
+    if IsWebPDB:
+        pass # needed in case the trace line is commented out
+        web_pdb.set_trace()
 
     if paramstring == 'add':
         # Perform the add context menu action.
@@ -154,9 +157,23 @@ def router(paramstring):
             return False
         folders,files=xbmcvfs.listdir(DATA_DIR)
         tgroup=[localize(30102)]+[item.rsplit(".",1)[0] for item in files if item.endswith(".xml")]
-        fnames=xbmcgui.Dialog().multiselect(localize(30103)+" "+i_label,tgroup)
-        # Check if the user clicked ok and process the selections
-        if fnames is not None:
+        # Loop requesting to select a group name until the user either selects one or presses cancel.
+        while True:
+            fnames=xbmcgui.Dialog().multiselect(localize(30103)+" "+i_label,tgroup)
+            # Check if the user clicked ok and process the selections
+            if fnames is None:
+                # User canceled, display notification and exit without adding.
+                xbmcgui.Dialog().notification(localize(30114),localize(30115))
+                return False
+            if len(fnames)==0:
+                # User pressed ok without selecting a group. Prompt for a re-selection.
+                if xbmcgui.Dialog().yesno(localize(30119),localize(30120),defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+                    continue
+                else:
+                    # User canceled, display notification and exit without adding.
+                    xbmcgui.Dialog().notification(localize(30114),localize(30115))
+                    return False
+            # User selected at least one group (or new group).    
             NewElement=CreateElement(i_label)
             for sel in fnames:
                 if tgroup[sel]==localize(30102):
@@ -168,10 +185,7 @@ def router(paramstring):
                     SaveItem(tgroup[sel],NewElement)
             # Provide feeback to user once item has been sucessfully added to the group(s)
             xbmcgui.Dialog().notification(localize(30114),i_label+" "+localize(30118))
-        else:
-            # User canceled, display notification and exit without adding.
-            xbmcgui.Dialog().notification(localize(30114),localize(30115))
-            return False
+            break
 
     else:
         # If the provided paramstring does not contain a supported action
