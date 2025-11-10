@@ -1,10 +1,10 @@
 # Favourites Group Addon for Kodi
 
-##### Purpose:
+### Purpose:
 
 This addon allows saving of Kodi elements (addons,folders,media, and endpoints) to a group similar to the built-in favourites feature. The main enhancement is that multiple independent named groups of elements can be created each having a different combination of elements.
 
-##### Implementation:
+### Implementation:
 
 A new global context menu item is added to Kodi, called "Add to FavouriteGroup" which should be present in most of the locations that the "Add to favourites" context menu item is also available.
 
@@ -14,11 +14,11 @@ New named Favourite Groups can be added or deleted at any time.
 
 Kodi elements can be added to one or more Favourite Group in one operation.
 
-##### Installation:
+### Installation:
 
 See the installation instructions document: [kodirepo/README.md at master · Fillimerica/kodirepo](https://github.com/Fillimerica/kodirepo/blob/master/README.md)
 
-##### Usage:
+### Usage:
 
 A new context menu item will be present called "Add to FavouriteGroup" in most areas of Kodi. Navigate to the desired addon, folder, media, or endpoint, bring up the context menu, and select "Add to FavouriteGroup"
 
@@ -40,7 +40,7 @@ If the Add to Favourite Group was sucessful, a notification will appear in the u
 
 ![](./assets/2025-11-09-17-29-19-image.png)
 
-##### Usage Part 2
+### Usage Part 2
 
 Once one or more Favourite Groups have been created, you may access them from either the addon directly or via the url of a specific group.
 
