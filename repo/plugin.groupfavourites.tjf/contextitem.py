@@ -106,10 +106,15 @@ def CreateNewGroup():
     """
     lvalidregex=r'[\\/:\*\?"<>|]'
     fnameraw=""
+
+    # Make sure the addon data folder exists, create it if it does not.
+    if not xbmcvfs.exists(DATA_DIR+"/"):
+        xbmcvfs.mkdirs(DATA_DIR)
     
     while True:
         fnameraw=xbmcgui.Dialog().input(localize(30104),defaultt=fnameraw)
         if fnameraw=="":
+            # User chose to cancel new group creation. Display a confirmation dialog.
             msg=localize(30106)
             if xbmcgui.Dialog().yesno(localize(30105),msg,defaultbutton=xbmcgui.DLG_YESNO_NO_BTN):
                 return ""
@@ -118,20 +123,32 @@ def CreateNewGroup():
         else:
             # User typed something, verify that it is a valid groupname.
             if re.search(lvalidregex,fnameraw):
-                msg=localize(30108)+"[CR][CR]"
+                msg=localize(30108)+"[CR]"
                 msg=msg+localize(30109)+"="+fnameraw+"[CR][CR]"+localize(30110)
                 if xbmcgui.Dialog().yesno(localize(30107),msg,defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
                     continue
                 else:
                     return ""
+            # Create the base XML file from the group name
+            GroupFQFN=xbmcvfs.translatePath(DATA_DIR)+'/'+fnameraw+'.xml'
+            # Verify that the group name entered does not already exist.
+            if xbmcvfs.exists(GroupFQFN):
+                msg=localize(30122)+"[CR]"
+                msg=msg+localize(30109)+"="+fnameraw+"[CR][CR]"+localize(30110)
+                if xbmcgui.Dialog().yesno(localize(30121),msg,defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+                    continue
+                else:
+                    return ""
             break
     # Group name specified and is valid.
-    # Make sure the addon data folder exists, create it if it does not.
-    if not xbmcvfs.exists(DATA_DIR+"/"):
-        xbmcvfs.mkdirs(DATA_DIR)
-    # Create the base XML file from the group name
-    GroupFQFN=xbmcvfs.translatePath(DATA_DIR)+'/'+fnameraw+'.xml'
+    # Ask ther user if they would like to associate an image with the group.
+    GroupThumb=""
+    if xbmcgui.Dialog().yesno(localize(30109)+": "+fnameraw,localize(30123),defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+        # Yes, prompt for an image file to use.
+        GroupThumb=xbmcgui.Dialog().browse(2,localize(30124),"",useThumbs=True,defaultt="")
+
     xmltree=ET.ElementTree(ET.fromstring(XML_BASE))
+    xmltree.getroot().set("thumb",GroupThumb)
     xmltree.write(GroupFQFN)
     return fnameraw
 

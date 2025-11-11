@@ -78,16 +78,41 @@ def list_root():
         for row in tgroup:
             # Create a list item with a text label
             list_item = xbmcgui.ListItem(label=row,offscreen=True)
+
+            # Open and read the group root tag.
+            GroupFQFN=DATA_DIR+'/'+row+'.xml'
+            xmltree=ET.parse(GroupFQFN)
+            xmlroot=xmltree.getroot()
+            # Verify the root tag is valid.
+            if not xmlroot.tag=='favourites':
+                raise ValueError(localize(30111)+f' {xmlroot.tag}!')
+                return -1
+            # Set graphics (thumbnail, fanart, banner, poster, landscape etc.) for the list item.
+            t_Art=xmlroot.get('thumb')
+            if not t_Art=="":
+                list_item.setArt({'thumb': t_Art})
+            t_Art=xmlroot.get('poster')
+            if not t_Art=="":
+                list_item.setArt({'poster': t_Art, 'fanart': t_Art})
+
             url = get_url(action='groupsel', data=row)
             is_folder=True
 
-            # Allow removal of the entire group.
             # Build a context menu link for this group.
-            cMenuURL=get_url(
+            # Allow removal of the entire group.
+            cMenuURLDel=get_url(
                 action='groupdel', 
                 data=row
                 )
-            list_item.addContextMenuItems([ (localize(30201),"RunPlugin({})".format(cMenuURL))])
+            # Allow setting/changing the image associated with this group.
+            cMenuURLImage=get_url(
+                action='groupimage', 
+                data=row
+                )
+            list_item.addContextMenuItems([
+            (localize(30208),"RunPlugin({})".format(cMenuURLImage)),
+            (localize(30201),"RunPlugin({})".format(cMenuURLDel))
+            ])
 
             list_item.setProperty('IsPlayable','false')
             # Add our item to the Kodi virtual folder listing.
@@ -192,6 +217,35 @@ def groupsel(groupname):
 
     # Finish creating a virtual folder.
     xbmcplugin.endOfDirectory(HANDLE)
+
+def GroupImage(groupname):
+    """
+    This function allows setting or changing the image associated with the group.
+    A confirmation dialog is shown prior to a change being saved.
+    """
+
+    GroupThumb=xbmcgui.Dialog().browse(2,localize(30124),"",useThumbs=True,defaultt=":Cancel")
+    if GroupThumb==":Cancel":   # User selected cancel from the dialog.
+        # User canceled, display notification and exit.
+        xbmcgui.Dialog().notification(localize(30209),localize(30210))
+        return False
+    # Update the thumb key in the group xml file.
+    GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
+    xmltree=ET.parse(GroupFQFN)
+    xmlroot=xmltree.getroot()
+    # Verify the root tag is valid.
+    if not xmlroot.tag=='favourites':
+        raise ValueError(localize(30111)+f' {xmlroot.tag}!')
+        return -1
+    xmlroot.set("thumb",GroupThumb)
+    xmltree.write(GroupFQFN)
+
+    # Call group load function to rebuild the kodi listing.
+    list_root()
+
+    # Tell Kodi to refresh the virtual directory container after it has been rebuilt.
+    xbmc.executebuiltin('Container.Refresh')
+    return True
 
 def DeleteGroup(groupname):
     """
@@ -323,6 +377,9 @@ def router(paramstring):
     elif params.get('action') == 'groupsel':
         # Open the selected group and populate the virtual directory.
         groupsel(params['data'])
+    elif params.get('action') == 'groupimage':
+        # Remove the selected item from the group it is in.
+        GroupImage(params['data'])
     elif params.get('action') == 'groupdel':
         # Remove the selected item from the group it is in.
         DeleteGroup(params['data'])

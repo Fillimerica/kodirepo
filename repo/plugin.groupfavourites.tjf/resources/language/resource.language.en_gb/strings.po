@@ -91,7 +91,7 @@ msgstr ""
 
 #. User cancelled add item to GroupFavorite at item name notification line #2
 msgctxt "#30115"
-msgid "User canceled adding item to GroupFavourites"
+msgid "User cancelled adding item to GroupFavourites"
 msgstr ""
 
 #. Informational notification header.
@@ -101,7 +101,7 @@ msgstr ""
 
 #. Rename item user cancelled message.
 msgctxt "#30117"
-msgid "Rename Item Canceled"
+msgid "Rename Item Cancelled"
 msgstr ""
 
 #. Notification prompt after an item has been added to selected groups.
@@ -118,6 +118,27 @@ msgstr ""
 msgctxt "#30120"
 msgid "Would you like to return to the Group Selection dialog?"
 msgstr ""
+
+#. Add new group duplicate group name heading.
+msgctxt "#30121"
+msgid "Duplicate Group Name"
+msgstr ""
+
+#. Add new group duplicate group name message pt 1
+msgctxt "#30122"
+msgid "The entered group name already exists."
+msgstr ""
+
+#. Add new group associate an image question dialog
+msgctxt "#30123"
+msgid "Associate an existing image with this group?"
+msgstr ""
+
+#. Add new group associate an image selection dialog header
+msgctxt "#30124"
+msgid "Select Group Image"
+msgstr ""
+
 
 ### This is the end of the contextitem localization.
 
@@ -163,3 +184,22 @@ msgctxt "#30207"
 msgid "Unable to locate item to delete in group list. Nothing removed!"
 msgstr ""
 
+#. Change group image context menu item.
+msgctxt "#30208"
+msgid "Change Group Image"
+msgstr ""
+
+#. Change group image operation cancelled notification header.
+msgctxt "#30209"
+msgid "Change Group Image"
+msgstr ""
+
+#. Change group image operation cancelled notification line #2.
+msgctxt "#30210"
+msgid "Cancelled: No changes made."
+msgstr ""
+
+#. Change group image user did not select anything message.
+msgctxt "#30211"
+msgid "No image was selected.[CR]Any existing group image will be removed.[CR][CR]Remove group image?"
+msgstr ""
