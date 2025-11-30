@@ -8,7 +8,7 @@
 					<level>0</level>
                     <control type="toggle"/>
                 </setting>
-                <setting id="allow_renamegroup" type="boolean" label="30304">
+                <setting id="allow_deletegroup" type="boolean" label="30303">
                     <default>true</default>
 					<level>0</level>
                     <control type="toggle"/>
