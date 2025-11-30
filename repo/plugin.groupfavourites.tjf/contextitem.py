@@ -1,4 +1,5 @@
 # Context menu handler for the SubFavourites Plugin
+# V1.1 - November 2025 - Added disabling of certain functionality via settings.
 # V1.0 - October 2025
 
 import sys
@@ -163,9 +164,13 @@ def router(paramstring):
     """
     if IsWebPDB:
         pass # needed in case the trace line is commented out
-        #web_pdb.set_trace()
+        web_pdb.set_trace()
 
     if paramstring == 'add':
+        # Check setting to see if operation is permitted
+        if not AddonSettings.getBool('allow_additem'):
+            xbmcgui.Dialog().ok(localize(30114),localize(30130))
+            return False
         # Perform the add context menu action.
         i_label=xbmcgui.Dialog().input(localize(30113),sys.listitem.getLabel())
         if i_label=="":
@@ -190,14 +195,23 @@ def router(paramstring):
                     # User canceled, display notification and exit without adding.
                     xbmcgui.Dialog().notification(localize(30114),localize(30115))
                     return False
-            # User selected at least one group (or new group).    
+            # User selected at least one group (or new group).
+            # Check if user selected only the new group, and cancel if adding groups is disabled.
+            if len(fnames)==1 and tgroup[fnames[0]]==localize(30102) and (not AddonSettings.getBool('allow_newgroup')):
+                xbmcgui.Dialog().ok(localize(30114),localize(30131))
+                return False
+
             NewElement=CreateElement(i_label)
             for sel in fnames:
                 if tgroup[sel]==localize(30102):
                     # Adding a new named group.
-                    GroupName=CreateNewGroup()
-                    if not GroupName=="":
-                        SaveItem(GroupName,NewElement)
+                    # Check setting to see if operation is permitted
+                    if not AddonSettings.getBool('allow_newgroup'):
+                        xbmcgui.Dialog().ok(localize(30114),localize(30132))
+                    else:
+                        GroupName=CreateNewGroup()
+                        if not GroupName=="":
+                            SaveItem(GroupName,NewElement)
                 else:
                     SaveItem(tgroup[sel],NewElement)
             # Provide feeback to user once item has been sucessfully added to the group(s)

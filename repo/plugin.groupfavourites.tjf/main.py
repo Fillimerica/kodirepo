@@ -151,6 +151,7 @@ def groupsel(groupname):
         return -1
 
     # Read each child node and build the Kodi Directory from it.
+    NumItems=len(xmlroot)
     for index,row in enumerate(xmlroot):
         t_title=row.get('name')
         # Create a list item with a text label
@@ -186,28 +187,59 @@ def groupsel(groupname):
             list_item.setProperty('IsPlayable','false')
         else:
             url=row.text
-        
-        # Allow renaming of item in the Group.
+            
+        # Build the context menu for items in the group.
+        cMenuItems=[]
+        # Section 1: Move Up, Move Down (if >1 total elements are in the list)
+        if NumItems>1:
+            # Build a context menu link for this item so it can be Moved Up in the group.
+            if index>0: # Only if not already at the top
+                cMenuURL=get_url(
+                    action='itemmoveup', 
+                    itemname=row.text,
+                    itemindex=index,
+                    groupname=groupname
+                    )
+                cMenuItems.append((localize(30125),"RunPlugin({})".format(cMenuURL)))
+
+            # Build a context menu link for this item so it can be Moved Down in the group.
+            if index<(NumItems-1):
+                cMenuURL=get_url(
+                    action='itemmovedown', 
+                    itemname=row.text,
+                    itemindex=index,
+                    groupname=groupname
+                    )
+                cMenuItems.append((localize(30126),"RunPlugin({})".format(cMenuURL)))
+
+        # Build a context menu link for this item so it's thumnail/image can be changed in the group.
+        cMenuURL=get_url(
+            action='itemthumb', 
+            itemname=row.text,
+            itemindex=index,
+            groupname=groupname
+            )
+        cMenuItems.append((localize(30127),"RunPlugin({})".format(cMenuURL)))
+
         # Build a context menu link for this item so it can be renamed in the group.
-        cMenuURLRen=get_url(
+        cMenuURL=get_url(
             action='itemrename', 
             itemname=row.text,
             itemindex=index,
             groupname=groupname
             )
+        cMenuItems.append((localize(30112),"RunPlugin({})".format(cMenuURL)))
 
-        # Allow removal of item from the Group.
         # Build a context menu link for this item so it can be removed from the group.
-        cMenuURLDel=get_url(
+        cMenuURL=get_url(
             action='itemdel', 
             itemname=row.text,
             itemindex=index,
             groupname=groupname
             )
-        list_item.addContextMenuItems([
-        (localize(30112),"RunPlugin({})".format(cMenuURLRen)),
-        (localize(30101),"RunPlugin({})".format(cMenuURLDel))
-        ])
+        cMenuItems.append((localize(30101),"RunPlugin({})".format(cMenuURL)))
+
+        list_item.addContextMenuItems(cMenuItems)
 
         # Add our item to the Kodi virtual folder listing.
         xbmcplugin.addDirectoryItem(HANDLE, url, list_item, is_folder)
@@ -223,7 +255,10 @@ def GroupImage(groupname):
     This function allows setting or changing the image associated with the group.
     A confirmation dialog is shown prior to a change being saved.
     """
-
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_imagegroup'):
+        xbmcgui.Dialog().ok(localize(30208),localize(30231))
+        return False
     GroupThumb=xbmcgui.Dialog().browse(2,localize(30124),"",useThumbs=True,defaultt=":Cancel")
     if GroupThumb==":Cancel":   # User selected cancel from the dialog.
         # User canceled, display notification and exit.
@@ -252,6 +287,10 @@ def DeleteGroup(groupname):
     This function deletes an entire group including the xml file.
     A confirmation dialog is shown prior to deletion.
     """
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_deletegroup'):
+        xbmcgui.Dialog().ok(localize(30202),localize(30230))
+        return False
     msg=localize(30109)+"="+groupname+"[CR][CR]"+localize(30203)
     if xbmcgui.Dialog().yesno(localize(30202),msg,defaultbutton=xbmcgui.DLG_YESNO_NO_BTN):
         # Erase the entire group.
@@ -266,6 +305,48 @@ def DeleteGroup(groupname):
         return True
     return False
 
+def ItemImage(groupname,itemname,itemindex):
+    """
+    This function allows setting or changing the image associated with selected item..
+    A confirmation dialog is shown prior to a change being saved.
+    """
+
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_imageitem'):
+        xbmcgui.Dialog().ok(localize(30127),localize(30136))
+        return False
+    ItemThumb=xbmcgui.Dialog().browse(2,localize(30128),"",useThumbs=True,defaultt=":Cancel")
+    if ItemThumb==":Cancel":   # User selected cancel from the dialog.
+        # User canceled, display notification and exit.
+        xbmcgui.Dialog().notification(localize(30212),localize(30210))
+        return False
+    # Update the thumb key in the group xml file.
+    GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
+    xmltree=ET.parse(GroupFQFN)
+    xmlroot=xmltree.getroot()
+    # Verify the root tag is valid.
+    if not xmlroot.tag=='favourites':
+        raise ValueError(localize(30111)+f' {xmlroot.tag}!')
+        return -1
+    for index,row in enumerate(xmlroot.findall('favourite')):
+        if (row.text==itemname) and (index==int(itemindex)):
+            # Matching item located, update the item thumbnail.
+            row.set("thumb",ItemThumb)
+            break
+    else:
+        raise ValueError(localize(30213))
+        return -1
+
+    # Item sucessfully removed from the tree, write out the modified group xml.
+    xmltree.write(GroupFQFN)
+    
+    # Call group load function to rebuild the kodi listing.
+    groupsel(groupname)
+    
+    # Tell Kodi to refresh the virtual directory container after it has been rebuilt.
+    xbmc.executebuiltin('Container.Refresh')
+    return True
+
 def RenameItem(groupname,itemname,itemindex):
     """
     This function renames the listitem from in the current group.
@@ -275,6 +356,10 @@ def RenameItem(groupname,itemname,itemindex):
         pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_renameitem'):
+        xbmcgui.Dialog().ok(localize(30112),localize(30133))
+        return False
     # Open and read the current group.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
     xmltree=ET.parse(GroupFQFN)
@@ -296,7 +381,7 @@ def RenameItem(groupname,itemname,itemindex):
                 row.set('name',i_label)
                 break
     else:
-        raise ValueError(localize(30207))
+        raise ValueError(localize(30213))
         return -1
 
     # Item sucessfully removed from the tree, write out the modified group xml.
@@ -319,6 +404,10 @@ def DeleteItem(groupname,itemname,itemindex):
         pass # needed in case the trace line is commented out
         #web_pdb.set_trace()
 
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_deleteitem'):
+        xbmcgui.Dialog().ok(localize(30204),localize(30232))
+        return False
     # Open and read the current group.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
     xmltree=ET.parse(GroupFQFN)
@@ -337,6 +426,47 @@ def DeleteItem(groupname,itemname,itemindex):
             break
     else:
         raise ValueError(localize(30207))
+        return -1
+
+    # Item sucessfully removed from the tree, write out the modified group xml.
+    xmltree.write(GroupFQFN)
+    
+    # Call group load function to rebuild the kodi listing.
+    groupsel(groupname)
+    
+    # Tell Kodi to refresh the virtual directory container after it has been rebuilt.
+    xbmc.executebuiltin('Container.Refresh')
+            
+    return True
+
+def MoveItem(groupname,itemname,itemindex,direction):
+    """
+    This function deletes the selected listitem from the current group.
+    A confirmation dialog is shown prior to deletion.
+    """
+    if IsWebPDB:
+        pass # needed in case the trace line is commented out
+        #web_pdb.set_trace()
+
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_moveitem'):
+        xbmcgui.Dialog().ok(localize(30134),localize(30135))
+        return False
+    # Open and read the current group.
+    GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
+    xmltree=ET.parse(GroupFQFN)
+    xmlroot=xmltree.getroot()
+    # Verify the root tag is valid.
+    if not xmlroot.tag=='favourites':
+        raise ValueError(localize(30111)+f' {xmlroot.tag}!')
+        return -1
+    for index,row in enumerate(xmlroot.findall('favourite')):
+        if (row.text==itemname) and (index==int(itemindex)):
+            xmlroot.remove(row)
+            xmlroot.insert((index+direction),row)
+            break
+    else:
+        raise ValueError(localize(30213))
         return -1
 
     # Item sucessfully removed from the tree, write out the modified group xml.
@@ -374,21 +504,39 @@ def router(paramstring):
     elif params.get('action') == 'invoke':
         # Try to run the embedded command.
         xbmc.executebuiltin(params['data'])
+
     elif params.get('action') == 'groupsel':
         # Open the selected group and populate the virtual directory.
         groupsel(params['data'])
+
     elif params.get('action') == 'groupimage':
-        # Remove the selected item from the group it is in.
+        # Change the image associated with the group.
         GroupImage(params['data'])
+
     elif params.get('action') == 'groupdel':
-        # Remove the selected item from the group it is in.
+        # Delete the entire group.
         DeleteGroup(params['data'])
+
+    elif params.get('action') == 'itemmoveup':
+        # Move the selected item up in the group.
+        MoveItem(params['groupname'],params['itemname'],params['itemindex'],-1)
+
+    elif params.get('action') == 'itemmovedown':
+        # Move the selected item up in the group.
+        MoveItem(params['groupname'],params['itemname'],params['itemindex'],1)
+
+    elif params.get('action') == 'itemthumb':
+        # Rename the selected item in the group.
+        ItemImage(params['groupname'],params['itemname'],params['itemindex'])
+
     elif params.get('action') == 'itemrename':
         # Rename the selected item in the group.
         RenameItem(params['groupname'],params['itemname'],params['itemindex'])
+
     elif params.get('action') == 'itemdel':
         # Remove the selected item from the group it is in.
         DeleteItem(params['groupname'],params['itemname'],params['itemindex'])
+
     elif not (params.get('content_type') == None):
         # Default in some skins when called from a content screen.
         list_root()

@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<settings version="1">
+    <section id="plugin.groupfavourites.tjf">
+        <category id="groupops" label="30300">
+            <group id="1" label="">
+                <setting id="allow_newgroup" type="boolean" label="30302">
+                    <default>true</default>
+					<level>0</level>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_renamegroup" type="boolean" label="30304">
+                    <default>true</default>
+					<level>0</level>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_imagegroup" type="boolean" label="30305">
+                    <default>true</default>
+					<level>0</level>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+        <category id="itemops" label="30320">
+            <group id="2" label="">
+                <setting id="allow_additem" type="boolean" label="30322">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_deleteitem" type="boolean" label="30323">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_renameitem" type="boolean" label="30324">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_imageitem" type="boolean" label="30325">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+                <setting id="allow_moveitem" type="boolean" label="30326">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+    </section>
+</settings>

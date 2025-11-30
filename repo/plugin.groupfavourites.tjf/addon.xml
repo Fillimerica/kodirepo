@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.groupfavourites.tjf" version="0.1.0" name="Favourite Groups by TJF" provider-name="Fillimerica">
+<addon id="plugin.groupfavourites.tjf" version="0.2.0" name="Favourite Groups by TJF" provider-name="Fillimerica">
 <requires>
   <import addon="xbmc.python" version="3.0.1"/>
-  <import addon="script.module.web-pdb" version="1.0" optional="true"/>
 </requires>
 <extension point="xbmc.python.pluginsource" library="main.py">
   <provides>executable audio video image</provides>
@@ -24,7 +23,14 @@
     <icon>resources/images/icon.png</icon>
     <fanart>resources/images/fanart.jpg</fanart>
   </assets>
-  <news>[CR][B]0.1.0[/B]
+  <news>
+  [CR][B]0.2.0[/B]
+  [CR]- Implemented new set of context menu features:
+  [CR]- Move Item Up/Down in Group, Change Item Thumbnail in Group, Rename Item in Group.
+  [CR]- Remove Item from Group.
+  [CR]- Implemented Addon settings to restrict any of the operations that can make changes
+  [CR]- to the configuration.
+  [CR][B]0.1.0[/B]
   [CR]- Implemented new image association with group feature.
   [CR]- Trap and prevent overwrite of group when adding a new group with the same name.
   [CR][B]0.0.10[/B]

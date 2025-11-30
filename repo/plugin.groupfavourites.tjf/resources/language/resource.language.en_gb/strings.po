@@ -139,6 +139,62 @@ msgctxt "#30124"
 msgid "Select Group Image"
 msgstr ""
 
+#. Context menu item for moving an item up in the Group
+msgctxt "#30125"
+msgid "Move Up"
+msgstr ""
+
+#. Context menu item for moving an item down in the Group
+msgctxt "#30126"
+msgid "Move Down"
+msgstr ""
+
+#. Context menu item for changing an item's thumnail in the Group
+msgctxt "#30127"
+msgid "Change Thumbnail"
+msgstr ""
+
+#. Change thumbnail prompt for changing an item's thumbnail.
+msgctxt "#30128"
+msgid "Select Item Thumbnail"
+msgstr ""
+
+#. Add Item to Group Restricted Message
+msgctxt "#30130"
+msgid "Adding an item to a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Add New Group Restricted Message
+msgctxt "#30131"
+msgid "Creating a new Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Add New Group Restricted Message when other groups are also included.
+msgctxt "#30132"
+msgid "Creating a new Group has been administratively disabled.[CR][CR]Item has been added to the existing selected groups only."
+msgstr ""
+
+#. Rename Item in Group Restricted Message
+msgctxt "#30133"
+msgid "Changing the Name of an item in a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Move Item in Group Header
+msgctxt "#30134"
+msgid "Move Item"
+msgstr ""
+
+#. Move Item in Group Restricted Message
+msgctxt "#30135"
+msgid "Moving an item in a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Change Item Image Restricted Message
+msgctxt "#30136"
+msgid "Changing the Item Thumbnail in the Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+
 
 ### This is the end of the contextitem localization.
 
@@ -164,9 +220,9 @@ msgctxt "#30203"
 msgid "Are you sure you want delete this entire group?"
 msgstr ""
 
-#. Item deletion function header
+#. Item removal function header
 msgctxt "#30204"
-msgid "Item Deletion"
+msgid "Remove Item"
 msgstr ""
 
 #. Item deletion function prompt text pt 2
@@ -176,7 +232,7 @@ msgstr ""
 
 #. Item deletion function prompt text pt 3
 msgctxt "#30206"
-msgid "Are you sure you want delete this item from this group?"
+msgid "Are you sure you want remove this item from this group?"
 msgstr ""
 
 #. Item deletion function unable to locate item text
@@ -202,4 +258,107 @@ msgstr ""
 #. Change group image user did not select anything message.
 msgctxt "#30211"
 msgid "No image was selected.[CR]Any existing group image will be removed.[CR][CR]Remove group image?"
+msgstr ""
+
+#. Change group image operation cancelled notification header.
+msgctxt "#30212"
+msgid "Change Item Thumbnail"
+msgstr ""
+
+#. Item change thumbnail/rename/move function unable to locate item text
+msgctxt "#30213"
+msgid "Unable to locate item in group list."
+msgstr ""
+
+#. Upgrade create userdata addon data folder to hold groups foder create error.
+msgctxt "#30214"
+msgid "Error attermpting to create the groups folder. Path="
+msgstr ""
+
+#. Upgrade copy group files from the data dir to the groups folder error.
+msgctxt "#30215"
+msgid "Error attermpting to copy group file from userdata to groups folder. Source file="
+msgstr ""
+
+#. Delete Group Restricted Message
+msgctxt "#30230"
+msgid "Deleting a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Change Group Image Restricted Message
+msgctxt "#30231"
+msgid "Changing the Group Image has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+#. Delete Item Restricted Message
+msgctxt "#30232"
+msgid "Removing an Item from a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
+
+
+### Start of the settings localization section.
+
+#. Group Operations Header
+msgctxt "#30300"
+msgid "Group Operations"
+msgstr ""
+
+#. Group Operations Master
+msgctxt "#30301"
+msgid "Enable Group Operations"
+msgstr ""
+
+#. Group Operations Creation
+msgctxt "#30302"
+msgid "New Group Creation"
+msgstr ""
+
+#. Group Operations Deletion
+msgctxt "#30303"
+msgid "Group Deletion"
+msgstr ""
+
+#. Group Operations Rename
+msgctxt "#30304"
+msgid "Group Rename"
+msgstr ""
+
+#. Group Operations Change Thumbnail
+msgctxt "#30305"
+msgid "Group Change Thumbnail"
+msgstr ""
+
+#. Item Operations Header
+msgctxt "#30320"
+msgid "Item Operations"
+msgstr ""
+
+#. Item Operations Header
+msgctxt "#30321"
+msgid "Enable Item Operations"
+msgstr ""
+
+#. Item Operations Add to Group
+msgctxt "#30322"
+msgid "Add to Group"
+msgstr ""
+
+#. Item Operations Delete from Group
+msgctxt "#30323"
+msgid "Delete from Group"
+msgstr ""
+
+#. Item Operations Rename
+msgctxt "#30324"
+msgid "Rename Item"
+msgstr ""
+
+#. Item Operations Change Thumbnail
+msgctxt "#30325"
+msgid "Change Item Thumbnail"
+msgstr ""
+
+#. Item Operations Move Up/Down
+msgctxt "#30326"
+msgid "Move Item Within Group"
 msgstr ""
