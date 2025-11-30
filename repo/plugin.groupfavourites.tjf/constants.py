@@ -24,8 +24,11 @@ AddonSettings=Addon().getSettings()
 
 # Version 0.2.0 Need to move the group xml files into a sub-folder of data because
 # the Kodi settings.xml file gets stored there.
-if not xbmcvfs.exists(DATA_DIR):
-    if xbmcvfs.mkdirs(DATA_DIR):
+# Kodi in Linux has issues with the xbmcvfs.exists and mkdirs functions, need to work
+# around the issues.
+if not xbmcvfs.exists(DATA_DIR+"/"):
+    xbmcvfs.mkdirs(DATA_DIR)
+    if xbmcvfs.exists(DATA_DIR+"/"):
         folders,files=xbmcvfs.listdir(BASE_DATA_DIR)
         for item in files:
             if item.endswith(".xml") and (not item=="settings.xml"):
