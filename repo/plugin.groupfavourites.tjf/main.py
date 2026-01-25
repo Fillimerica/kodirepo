@@ -70,7 +70,7 @@ def list_root():
         # of the current section.
         xbmcplugin.setPluginCategory(HANDLE, ADDON_NAME)
         xbmcplugin.setProperty(HANDLE,'FolderName','Root')
-        xbmcplugin.setContent(HANDLE, 'favourites')
+        xbmcplugin.setContent(HANDLE, 'video')
         for row in tgroup:
             # Create a list item with a text label
             list_item = xbmcgui.ListItem(label=row,offscreen=True)
@@ -86,7 +86,7 @@ def list_root():
             # Set graphics (thumbnail, fanart, banner, poster, landscape etc.) for the list item.
             t_Art=xmlroot.get('thumb')
             if not t_Art=="":
-                list_item.setArt({'thumb': t_Art})
+                list_item.setArt({'thumb': t_Art, 'icon': t_Art})
             t_Art=xmlroot.get('poster')
             if not t_Art=="":
                 list_item.setArt({'poster': t_Art, 'fanart': t_Art})
@@ -142,8 +142,8 @@ def groupsel(groupname):
     # Set plugin category. It is displayed in some skins as the name
     # of the current section.
     xbmcplugin.setPluginCategory(HANDLE, "Favorites Group: "+groupname)
-    xbmcplugin.setProperty(HANDLE,'FolderName','Root')
-    xbmcplugin.setContent(HANDLE, 'videos')
+    #xbmcplugin.setProperty(HANDLE,'FolderName','Root')
+    xbmcplugin.setContent(HANDLE, 'favorites')
  
     # Open and read the desired list of media/plugin objects.
     GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
@@ -162,12 +162,20 @@ def groupsel(groupname):
         list_item = xbmcgui.ListItem(label=t_title,offscreen=True)
 
         # Set graphics (thumbnail, fanart, banner, poster, landscape etc.) for the list item.
+        art = {}
         t_Art=row.get('thumb')
         if not t_Art=="":
-            list_item.setArt({'thumb': t_Art})
+            art['thumb'] = t_Art
+            art['icon'] = t_Art
+            art['fanart'] = t_Art
+           # list_item.setArt({'thumb': t_Art, 'icon': t_Art})
         t_Art=row.get('poster')
         if not t_Art=="":
-            list_item.setArt({'poster': t_Art, 'fanart': t_Art})
+            art['poster'] = t_Art
+            art['fanart'] = t_Art
+            #list_item.setArt({'poster': t_Art, 'fanart': t_Art})
+        list_item.setArt(art)
+        list_item.setProperty('IsPlayable', 'true')
         # Set additional info for the list item via InfoTag.
         # 'mediatype' is needed for skin to display info for this ListItem correctly.
         # info_tag = list_item.getVideoInfoTag()
