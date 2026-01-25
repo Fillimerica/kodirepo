@@ -40,10 +40,6 @@ URL = sys.argv[0]
 # Get a plugin handle as an integer number.
 HANDLE = int(sys.argv[1])
 
-# Remote debugging module. IsWebPDB determines if it is installed on the system.
-if IsWebPDB:
-    import web_pdb
-
 def validfilename(genstring):
     return "".join(x for x in genstring if x.isalnum())
 
@@ -104,6 +100,12 @@ def list_root():
                 action='groupdel', 
                 data=row
                 )
+            # Build a context menu link for this group.
+            # Allow rename of the group.
+            cMenuURLRen=get_url(
+                action='groupren', 
+                data=row
+                )
             # Allow setting/changing the image associated with this group.
             cMenuURLImage=get_url(
                 action='groupimage', 
@@ -111,6 +113,7 @@ def list_root():
                 )
             list_item.addContextMenuItems([
             (localize(30208),"RunPlugin({})".format(cMenuURLImage)),
+            (localize(30304),"RunPlugin({})".format(cMenuURLRen)),
             (localize(30201),"RunPlugin({})".format(cMenuURLDel))
             ])
 
@@ -123,6 +126,7 @@ def list_root():
 
     # Add sort methods for the virtual folder items
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_NONE)
+    xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_LABEL)
 
     # Finish creating a virtual folder.
     xbmcplugin.endOfDirectory(HANDLE)
@@ -246,7 +250,8 @@ def groupsel(groupname):
 
     # Add sort methods for the virtual folder items
     xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_NONE)
-
+    xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_LABEL)
+    
     # Finish creating a virtual folder.
     xbmcplugin.endOfDirectory(HANDLE)
 
@@ -305,6 +310,31 @@ def DeleteGroup(groupname):
         return True
     return False
 
+def RenameGroup(groupname):
+    """
+    This function renames the group.
+    The user is prompted for a new item name to use.
+    """
+
+    # Prompt the user for the new group name.
+    i_label=xbmcgui.Dialog().input(localize(30113),groupname)
+    if i_label=="":
+        # User canceled, display notification and exit without renaming.
+        xbmcgui.Dialog().notification(localize(30116),localize(30117))
+        return -2
+    else:
+        newname = i_label
+
+    GroupFQFN=DATA_DIR+'/'+groupname+'.xml'
+    NewFQFN=DATA_DIR+'/'+newname+'.xml'
+    os.rename(GroupFQFN, NewFQFN)
+    # Call group load function to rebuild the kodi listing.
+    list_root()
+
+    # Tell Kodi to refresh the virtual directory container after it has been rebuilt.
+    xbmc.executebuiltin('Container.Refresh')
+    return True
+    
 def ItemImage(groupname,itemname,itemindex):
     """
     This function allows setting or changing the image associated with selected item..
@@ -516,6 +546,10 @@ def router(paramstring):
     elif params.get('action') == 'groupdel':
         # Delete the entire group.
         DeleteGroup(params['data'])
+
+    elif params.get('action') == 'groupren':
+        # Delete the entire group.
+        RenameGroup(params['data'])
 
     elif params.get('action') == 'itemmoveup':
         # Move the selected item up in the group.
