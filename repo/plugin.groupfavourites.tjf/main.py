@@ -70,7 +70,7 @@ def list_root():
         # of the current section.
         xbmcplugin.setPluginCategory(HANDLE, ADDON_NAME)
         xbmcplugin.setProperty(HANDLE,'FolderName','Root')
-        xbmcplugin.setContent(HANDLE, 'video')
+        xbmcplugin.setContent(HANDLE, 'favourites')
         for row in tgroup:
             # Create a list item with a text label
             list_item = xbmcgui.ListItem(label=row,offscreen=True)
