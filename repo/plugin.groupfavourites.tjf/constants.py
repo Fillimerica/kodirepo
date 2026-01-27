@@ -40,4 +40,10 @@ if not xbmcvfs.exists(DATA_DIR+"/"):
         raise ValueError(localize(30214)+f' {DATA_DIR}')
         
 # Check to see if the debugger is installed as an optional dependency.
-IsWebPDB=xbmc.getCondVisibility('System.HasAddon("script.module.web-pdb")')
+try:
+    import web_pdb
+    IsWebPDB = True
+except:
+    IsWebPDB = False
+
+#IsWebPDB=xbmc.getCondVisibility('System.HasAddon("script.module.web-pdb")')

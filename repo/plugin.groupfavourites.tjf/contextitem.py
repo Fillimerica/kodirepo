@@ -12,7 +12,10 @@ import urllib.parse as urlparse
 # Import the project constants and globals for use within the module.
 from constants import *
 
-
+# Remote debugging module. IsWebPDB determines if it is installed on the system.
+if IsWebPDB:
+    import web_pdb
+    
 # Base XML string for new group
 XML_BASE="""
 <favourites>
@@ -160,7 +163,7 @@ def router(paramstring):
     """
     if IsWebPDB:
         pass # needed in case the trace line is commented out
-
+        web_pdb.set_trace()
     if paramstring == 'add':
         # Check setting to see if operation is permitted
         if not AddonSettings.getBool('allow_additem'):

@@ -40,6 +40,10 @@ URL = sys.argv[0]
 # Get a plugin handle as an integer number.
 HANDLE = int(sys.argv[1])
 
+# Remote debugging module. IsWebPDB determines if it is installed on the system.
+if IsWebPDB:
+    import web_pdb
+
 def validfilename(genstring):
     return "".join(x for x in genstring if x.isalnum())
 

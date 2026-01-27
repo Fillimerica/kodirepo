@@ -2,6 +2,7 @@
 <addon id="plugin.groupfavourites.tjf" version="0.2.2" name="Favourite Groups by TJF" provider-name="Fillimerica">
 <requires>
   <import addon="xbmc.python" version="3.0.1"/>
+  <!-- <import addon="script.module.web-pdb" version="1.5.6"/> -->
 </requires>
 <extension point="xbmc.python.pluginsource" library="main.py">
   <provides>executable audio video image</provides>
