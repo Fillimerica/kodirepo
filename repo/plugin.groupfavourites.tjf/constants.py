@@ -46,4 +46,3 @@ try:
 except:
     IsWebPDB = False
 
-#IsWebPDB=xbmc.getCondVisibility('System.HasAddon("script.module.web-pdb")')

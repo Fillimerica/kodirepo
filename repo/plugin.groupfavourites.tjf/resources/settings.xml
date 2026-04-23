@@ -13,6 +13,11 @@
 					<level>0</level>
                     <control type="toggle"/>
                 </setting>
+                <setting id="allow_renamegroup" type="boolean" label="30304">
+                    <default>true</default>
+					<level>0</level>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="allow_imagegroup" type="boolean" label="30305">
                     <default>true</default>
 					<level>0</level>

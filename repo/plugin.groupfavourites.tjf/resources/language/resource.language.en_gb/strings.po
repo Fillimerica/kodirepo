@@ -295,6 +295,10 @@ msgctxt "#30232"
 msgid "Removing an Item from a Group has been administratively disabled.[CR][CR]Operation canceled."
 msgstr ""
 
+#. Rename Group Restricted Message
+msgctxt "#30233"
+msgid "Renaming a Group has been administratively disabled.[CR][CR]Operation canceled."
+msgstr ""
 
 ### Start of the settings localization section.
 
@@ -362,3 +366,19 @@ msgstr ""
 msgctxt "#30326"
 msgid "Move Item Within Group"
 msgstr ""
+
+#. Group name prompt for changing the group name.
+msgctxt "#30327"
+msgid "Desired Group Name"
+msgstr ""
+
+#. Informational notification header.
+msgctxt "#30328"
+msgid "GroupFavorites Group Control"
+msgstr ""
+
+#. Rename group user cancelled message.
+msgctxt "#30329"
+msgid "Group Rename Cancelled"
+msgstr ""
+

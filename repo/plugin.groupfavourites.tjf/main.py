@@ -327,12 +327,15 @@ def RenameGroup(groupname):
     This function renames the group.
     The user is prompted for a new item name to use.
     """
-
+    # Check setting to see if operation is permitted
+    if not AddonSettings.getBool('allow_renamegroup'):
+        xbmcgui.Dialog().ok(localize(30304),localize(30233))
+        return False
     # Prompt the user for the new group name.
-    i_label=xbmcgui.Dialog().input(localize(30113),groupname)
+    i_label=xbmcgui.Dialog().input(localize(30327),groupname)
     if i_label=="":
         # User canceled, display notification and exit without renaming.
-        xbmcgui.Dialog().notification(localize(30116),localize(30117))
+        xbmcgui.Dialog().notification(localize(30328),localize(30329))
         return -2
     else:
         newname = i_label
