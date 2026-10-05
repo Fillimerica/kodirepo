@@ -40,12 +40,49 @@
   [CR][B]0.0.10[/B]
   [CR]- Initial alpha release. </news>
 </extension>
-</addon><addon id="repository.tjfrepo" name="TJF Repository" version="1.0.0" provider-name="Fillimerica">
+</addon><addon id="plugin.video.cw" version="0.1.0" name="CW Network Plugin by TJF" provider-name="ThomasFilliman">
+<requires>
+  <import addon="xbmc.python" version="3.0.1" />
+  <import addon="script.module.web-pdb" version="1.0" optional="true" />
+  <import addon="script.module.selenium" version="3.14" />
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>video</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en_GB">CW Network Video Plugin</summary>
+  <description lang="en_GB">CW Network web scraper and video player launcher for Kodi.</description>
+  <disclaimer lang="en_GB" />
+  <license>GPL-3.0-only	</license>
+  <assets>
+    <icon>resources/images/icon.png</icon>
+    <fanart>resources/images/fanart.jpg</fanart>
+    <screenshot>resources/images/screenshot-1.jpg</screenshot>
+    <screenshot>resources/images/screenshot-2.jpg</screenshot>
+  </assets>
+  <news>
+  [CR][B]0.1.0[/B]
+  [CR]- Fixed episode listing error where non-season clips were being imported and causing a crash.
+  [CR{- Implement optional debugging via web-pdb without code editing.
+  [CR][B]0.0.1[/B]
+  [CR]- Initial alpha release.</news>
+</extension>
+</addon><addon id="repository.tjfrepo" name="TJF Repository" version="2.0.0" provider-name="Fillimerica">
     <extension point="xbmc.addon.repository" name="TJF Repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/addons.xml</info>
             <checksum>https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/addons.xml.md5</checksum>
             <datadir zip="true">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/</datadir>
+        </dir>
+        <dir minversion="21.0.0" maxversion="21.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/omega/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Fillimerica/kodirepo/master/omega/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/omega/zips/</datadir>
+        </dir>
+        <dir minversion="22.0.0" maxversion="22.9.9">
+            <info compressed="false">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/piers/zips/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/Fillimerica/kodirepo/master/piers/zips/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/piers/zips/</datadir>
         </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
@@ -56,6 +93,27 @@
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.jpg</fanart>
+        </assets>
+    </extension>
+</addon><addon id="script.module.browserlauncher" name="Browser Launcher" version="1.0" provider-name="TJF">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0" />
+		<import addon="script.module.web-pdb" version="1.0" optional="true" />
+    </requires>
+    <extension point="xbmc.python.script" library="main.py">
+	<provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <platform>all</platform>
+        <summary lang="en_GB">Browser Launcher</summary>
+        <language />
+        <description lang="en_GB">Launch websites via selected Browser in Kiosk-mode</description>
+        <description lang="de_DE">Öffnet Websiten mit dem ausgewählten Browser im Vollbildmodus</description>
+        <email>AddonScriptorDE at yahoo dot de</email>
+        <website />
+        <license>GPL-2.0-only</license>
+        <assets>
+            <icon>icon.png</icon>
         </assets>
     </extension>
 </addon></addons>

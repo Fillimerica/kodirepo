@@ -12,8 +12,9 @@ import zipfile
 
 from xml.etree import ElementTree
 
-SCRIPT_VERSION = 5
-KODI_VERSIONS = ["krypton", "leia", "matrix", "nexus", "repo"]
+SCRIPT_VERSION = 6
+# TF 10/2026 Updated the KODI_VERSIONS list to include the current releases
+KODI_VERSIONS = ["krypton", "leia", "matrix", "nexus","omega", "piers", "repo"]
 IGNORE = [
     ".git",
     ".github",

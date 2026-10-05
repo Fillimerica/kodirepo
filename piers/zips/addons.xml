@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addons><addon id="script.image.resource.select" name="Image Resource Select Addon" version="3.0.2" provider-name="ronie">
+	<requires>
+		<import addon="xbmc.python" version="3.0.0" />
+	</requires>
+	<extension point="xbmc.python.library" library="default.py" />
+	<extension point="xbmc.addon.metadata">
+		<summary lang="en_GB">Image resource selection addon</summary>
+		<description lang="en_GB">Script for skinners to let users select an image resource addon.</description>
+		<platform>all</platform>
+		<license>GPL-2.0-only</license>
+		<forum>https://forum.kodi.tv/showthread.php?tid=239558</forum>
+		<source>https://gitlab.com/ronie/script.image.resource.select</source>
+		<assets>
+			<icon>resources/icon.png</icon>
+		</assets>
+		<news>- code refactor</news>
+	</extension>
+</addon><addon id="script.module.selenium" name="Selenium and Web Drivers" version="4.50.0" provider-name="TJF">
+	<requires>
+		<import addon="xbmc.python" version="3.0.1" />
+		<import addon="script.module.certifi" version="2023.5.7" />
+		<import addon="script.module.urllib3" version="2.0.2" />
+	</requires>
+	<extension point="xbmc.python.module" library="lib" />
+	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
+		<summary>Selenium automates browsers.</summary>
+		<description>Selenium has the support of some of the largest browser vendors who have taken (or are taking) steps to make Selenium a native part of their browser. It is also the core technology in countless other browser automation tools, APIs and frameworks.</description>
+		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
+        <platform>all</platform>
+		<assets>
+		<icon>icon.png</icon>
+		</assets>
+	</extension>
+</addon><addon id="script.module.typing_extensions" name="typing_extensions" version="4.7.1" provider-name="Python Software Foundation">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Backported and Experimental Type Hints for Python 3.7+</summary>
+    <description lang="en_GB">Backported and Experimental Type Hints for Python 3.7+</description>
+    <platform>all</platform>
+    <license>PSF-2.0</license>
+    <website>https://typing-extensions.readthedocs.io/en/latest/</website>
+    <source>https://github.com/python/typing_extensions</source>
+    <assets>
+      <icon>resources/icon.png</icon>
+    </assets>
+  </extension>
+</addon><addon id="script.module.websocket" name="websocket-client" version="1.6.4" provider-name="liris">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">WebSocket client for Python with low level API options</summary>
+    <description lang="en_GB">WebSocket client for Python with low level API options</description>
+    <source>https://github.com/websocket-client/websocket-client</source>
+    <website>https://github.com/websocket-client/websocket-client</website>
+    <license>Apache-2.0</license>
+    <platform>all</platform>
+    <assets>
+      <icon>resources/icon.png</icon>
+    </assets>
+  </extension>
+</addon></addons>
