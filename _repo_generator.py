@@ -37,6 +37,10 @@ _COLORS = {
     "endc": "0",
 }
 
+# Define a global variable to hold the FQFN of repository.xxx.zip .
+# Updated in  _generate_addons_file if the ID starts with "repository"
+repositoryZip = ""
+
 
 def _setup_colors():
     """
@@ -242,6 +246,11 @@ class Generator:
                     color_text(size, 'yellow'),
                 )
             )
+# TF 10/2026 Set the global repositoryZip variable to the created repository zip FQFN.
+            if os.path.basename(final_zip).startswith("repository"):
+                global repositoryZip
+                repositoryZip = final_zip
+
 
     def _copy_meta_files(self, addon_id, addon_folder):
         """
@@ -374,6 +383,41 @@ class Generator:
             )
 
 
+"""
+TF 10/2026 Added new class that is called after the generator.
+Deletes the existing repository.xxxx.zip file in the root.
+Copies the newly created repository.xxxx.zip file into the root.
+Rewrites the index.html file to point at the new repository.xxxx.zip file.
+"""
+class SetRepositoryLink:
+
+    def __init__(self, rootPath,repoZipFQFN):
+
+        # Delete any existing repository zip files in the root
+        for filename in os.listdir(rootPath):
+            fullpath=os.path.join(rootPath,filename)
+            if os.path.isfile(fullpath):
+                if filename.startswith("repository") and filename.endswith(".zip"):
+                    os.remove(fullpath)
+
+        # Copy the repository zip file into the root folder of the repo.
+        shutil.copy(repoZipFQFN,rootPath)
+
+        # Rewite a new index.html file with the updated zip filename info.
+        repoZipFN=os.path.basename(repoZipFQFN)
+        indexFQFN=os.path.join(rootPath,"index.html")
+        html_content= f"""<!DOCTYPE html>
+<a href="{repoZipFN}">{repoZipFN}</a>
+"""
+        with open(indexFQFN, "w", encoding="utf-8") as file:
+            file.write(html_content)
+        print(
+                "Successfully built repository: {}".format(color_text(repoZipFN, 'yellow'))
+            )
+
 if __name__ == "__main__":
     for release in [r for r in KODI_VERSIONS if os.path.exists(r)]:
         Generator(release)
+# TF 10/2026 Handle if a repositoryZip file has been created or updated.
+    if repositoryZip:
+        SetRepositoryLink(os.getcwd(),repositoryZip)
