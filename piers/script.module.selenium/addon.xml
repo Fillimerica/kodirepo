@@ -4,13 +4,12 @@
 		version="4.50.0"
 		provider-name="TJF">
 	<requires>
-		<import addon="xbmc.python" version="3.0.1" />
+		<import addon="xbmc.python" version="3.10.0" />
 		<import addon="script.module.certifi" version="2023.5.7" />
-		<import addon="script.module.urllib3" version="2.0.2"	/>
+		<import addon="script.module.urllib3" version="2.2.3"	/>
 	</requires>
 	<extension point="xbmc.python.module" library="lib" />
 	<extension point="xbmc.addon.metadata">
-		<platform>all</platform>
 		<summary>Selenium automates browsers.</summary>
 		<description>Selenium has the support of some of the largest browser vendors who have taken (or are taking) steps to make Selenium a native part of their browser. It is also the core technology in countless other browser automation tools, APIs and frameworks.</description>
 		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
