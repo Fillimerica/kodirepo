@@ -2,8 +2,8 @@
 <addon id="plugin.video.cw" version="0.1.0" name="CW Network Plugin by TJF" provider-name="ThomasFilliman">
 <requires>
   <import addon="xbmc.python" version="3.0.1"/>
-  <import addon="script.module.web-pdb" version="1.0" optional="true"/>
-  <import addon="script.module.selenium" version="3.14"/>
+  <import addon="script.module.web-pdb" version="1.0.0" optional="true"/>
+  <import addon="script.module.selenium" version="3.14.0"/>
 </requires>
 <extension point="xbmc.python.pluginsource" library="main.py">
   <provides>video</provides>
@@ -13,6 +13,7 @@
   <description lang="en_GB">CW Network web scraper and video player launcher for Kodi.</description>
   <disclaimer lang="en_GB"></disclaimer>
   <license>GPL-3.0-only	</license>
+  <platform>all</platform>
   <assets>
     <icon>resources/images/icon.png</icon>
     <fanart>resources/images/fanart.jpg</fanart>
