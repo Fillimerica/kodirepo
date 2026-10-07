@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="repository.tjfrepo" name="TJF Repository" version="2.0.2" provider-name="Fillimerica">
+<addon id="repository.tjfrepo" name="TJF Repository" version="2.0.3" provider-name="Fillimerica">
     <extension point="xbmc.addon.repository" name="TJF Repository">
         <dir>
             <info compressed="false">https://raw.githubusercontent.com/Fillimerica/kodirepo/master/repo/zips/addons.xml</info>
