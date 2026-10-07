@@ -8,3 +8,6 @@
 [submodule "piers/script.module.jurialmunkey"]
 	path = piers/script.module.jurialmunkey
 	url = ../../jurialmunkey/script.module.jurialmunkey
+[submodule "piers/script.module.infotagger"]
+	path = piers/script.module.infotagger
+	url = ../../jurialmunkey/script.module.infotagger
