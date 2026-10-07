@@ -9,6 +9,7 @@ import os
 import shutil
 import sys
 import zipfile
+import re
 
 from xml.etree import ElementTree
 
@@ -311,6 +312,14 @@ class Generator:
                 addon_root = addon_xml.getroot()
                 id = addon_root.get('id')
                 version = addon_root.get('version')
+## TF 10/2026 Added new functionality to auto-increment the repository version number.
+                global incrementVersion
+                if addon_root is not None and incrementVersion and id.lower().startswith("repository"):
+                    version = re.sub(r'(\d+)$', lambda m: str(int(m.group(1)) + 1), version)
+                    addon_root.set("version",version)
+                    addon_xml.write(addon_xml_path,encoding="utf-8", xml_declaration=True)
+                    print("Updated repository {} to version {}".format(
+                        color_text(addon_xml_path, 'yellow'), color_text(version, 'green')))
 
                 updated = False
                 addon_entry = addons_root.find(addon_xpath.format(id))
@@ -416,6 +425,14 @@ class SetRepositoryLink:
             )
 
 if __name__ == "__main__":
+
+ # TF 10/2026 Implement auto-increment repository version number from the command line.
+ # parameter to use is "--inc"
+    incrementVersion=False
+    if len(sys.argv) > 1:
+        if sys.argv[1].lower() == "--inc":
+            incrementVersion=True
+
     for release in [r for r in KODI_VERSIONS if os.path.exists(r)]:
         Generator(release)
 # TF 10/2026 Handle if a repositoryZip file has been created or updated.
