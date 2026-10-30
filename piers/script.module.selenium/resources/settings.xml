@@ -1,0 +1,85 @@
+<?xml version="1.0" ?>
+<!-- CAUTION!! Any changes to this settings file must also be reflected in the guiSettings.py file. -->
+<!-- Functionality to permit the RunScript to access the current settings values displayed in the UI. -->
+
+<settings version="1">
+	<section id="script.module.selenium">
+		<category id="general" label="30008" help="">
+			<group id="1" label="30011">
+				<!-- This Setting is used as a fingerprint internally by the get/set Setting routine and is not visible. Do not Remove -->
+				<setting id="TopControlMarker" type="string" label="30000" help="">
+					<level>0</level>
+					<visible>false</visible>
+					<default>TopControlSanityCheck</default>
+					<control type="button" format="action">
+					</control>
+				</setting>
+				<setting id="ProfilePathOverride" type="boolean" label="30040" help="30001">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+				</setting>
+				<setting id="ProfilePathCustom" type="path" label="30041" help="30002">
+					<level>0</level>
+					<default>n/a</default>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<dependencies>
+						<dependency type="enable" setting="ProfilePathOverride">true</dependency>
+					</dependencies>
+					<control type="button" format="path">
+						<heading>30041</heading>
+					</control>
+				</setting>
+				<setting id="ProfileSuffix" type="string" label="30042" help="30003">
+					<level>0</level>
+					<default>selenium</default>
+					<dependencies>
+						<dependency type="enable" setting="ProfilePathOverride">false</dependency>
+					</dependencies>
+					<control type="edit" format="string">
+					</control>
+				</setting>
+			</group>
+			<group id="2" label="30012">
+				<setting id="Browser" label="30013" type="string">
+					<level>0</level>
+					<default/>
+					<constraints>
+						<allowempty>true</allowempty>
+					</constraints>
+					<control type="button" format="action">
+						<data>RunScript(script.module.selenium,setting=Browser)</data>
+					</control>
+				</setting>
+				<setting id="BrowserIndex" type="integer" label="30013" help="">
+				<!-- This setting is internal to the system and are not visible to the user. -->
+				<!-- It is managed by the script, and can be read by parent modules -->
+					<level>0</level>
+					<default>-1</default>
+					<visible>false</visible>
+					<control type="edit" format="integer">
+					</control>
+				</setting>
+				<setting id="BrowserProfileButton" type="string" label="30050" help="">
+					<level>0</level>
+					<default>Select to Show</default>
+					<control type="button" format="action">
+						<data>RunScript(script.module.selenium,setting=BrowserProfile)</data>
+					</control>
+				</setting>
+				<setting id="BrowserProfile" type="string" label="" help="">
+				<!-- This setting is internal to the system and are not visible to the user. -->
+				<!-- It is managed by the script, and can be read by parent modules -->
+					<level>0</level>
+					<default>-not configured-</default>
+					<visible>false</visible>
+					<control type="edit" format="string">
+					</control>
+				</setting>
+			</group>
+		</category>
+	</section>
+</settings>
+

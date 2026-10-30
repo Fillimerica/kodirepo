@@ -1,4 +1,5 @@
 # Context menu handler for the SubFavourites Plugin
+# V1.2 - October 2026 - Added support for scripts and RunScript favorites.
 # V1.1 - November 2025 - Added disabling of certain functionality via settings.
 # V1.0 - October 2025
 
@@ -21,6 +22,56 @@ XML_BASE="""
 <favourites>
 </favourites>
 """
+
+def getScriptArgs():
+    """
+    This function prompts the user for any arguments to be passed
+    to the script to be run by the RunScript() function.
+    User may leave this empty.
+    """
+    scriptArgs=""
+
+    while True:
+        scriptArgs=xbmcgui.Dialog().input(localize(30104),defaultt=scriptArgs)
+        if scriptArgs=="":
+            # User chose to cancel adding arguments.
+            msg=localize(30106)
+            if xbmcgui.Dialog().yesno(localize(30105),msg,defaultbutton=xbmcgui.DLG_YESNO_NO_BTN):
+                return ""
+            else:
+                continue
+        else:
+            # User typed something, verify that it is a valid groupname.
+            if re.search(lvalidregex,fnameraw):
+                msg=localize(30108)+"[CR]"
+                msg=msg+localize(30109)+"="+fnameraw+"[CR][CR]"+localize(30110)
+                if xbmcgui.Dialog().yesno(localize(30107),msg,defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+                    continue
+                else:
+                    return ""
+            # Create the base XML file from the group name
+            GroupFQFN=xbmcvfs.translatePath(DATA_DIR)+'/'+fnameraw+'.xml'
+            # Verify that the group name entered does not already exist.
+            if xbmcvfs.exists(GroupFQFN):
+                msg=localize(30122)+"[CR]"
+                msg=msg+localize(30109)+"="+fnameraw+"[CR][CR]"+localize(30110)
+                if xbmcgui.Dialog().yesno(localize(30121),msg,defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+                    continue
+                else:
+                    return ""
+            break
+    # Group name specified and is valid.
+    # Ask ther user if they would like to associate an image with the group.
+    GroupThumb=""
+    if xbmcgui.Dialog().yesno(localize(30109)+": "+fnameraw,localize(30123),defaultbutton=xbmcgui.DLG_YESNO_YES_BTN):
+        # Yes, prompt for an image file to use.
+        GroupThumb=xbmcgui.Dialog().browse(2,localize(30124),"",useThumbs=True,defaultt="")
+
+    xmltree=ET.ElementTree(ET.fromstring(XML_BASE))
+    xmltree.getroot().set("thumb",GroupThumb)
+    xmltree.write(GroupFQFN)
+    return fnameraw
+
 
 def CreateElement(pItemName):
     """
@@ -54,6 +105,14 @@ def CreateElement(pItemName):
         # IsAddon?
         mType='addon'
         mPath=':RunAddon("'+l_Path.rsplit('/')[-1]+'")'
+    if l_Path[0:9]=="script://":
+        # IsScript?
+        l_ScriptArgs=sys.listitem.getProperty("scriptArgs")
+        mType='script'
+        if l_ScriptArgs=="":
+            mPath=':RunScript('+l_Path.rsplit('/')[-1]+')'
+        else:
+            mPath=':RunScript('+l_Path.rsplit('/')[-1]+','+l_ScriptArgs+')'
     elif l_Path[0:13]=="favourites://":
         # IsFavourites link?
         mType='favourites'
@@ -163,7 +222,7 @@ def router(paramstring):
     """
     if IsWebPDB:
         pass # needed in case the trace line is commented out
-        web_pdb.set_trace()
+        #web_pdb.set_trace()
     if paramstring == 'add':
         # Check setting to see if operation is permitted
         if not AddonSettings.getBool('allow_additem'):
@@ -175,6 +234,13 @@ def router(paramstring):
             # User canceled, display notification and exit without adding.
             xbmcgui.Dialog().notification(localize(30114),localize(30115))
             return False
+# TF 10/2026 Check to see if item being added is a Script. If it is then prompt for
+# arguments to be included on the RunScript function call.
+        l_Path=sys.listitem.getPath()
+        if l_Path[0:9]=="script://":
+            l_ScriptArgs=xbmcgui.Dialog().input(localize(30140),defaultt="")
+            sys.listitem.setProperty("scriptArgs",l_ScriptArgs)
+
         folders,files=xbmcvfs.listdir(DATA_DIR)
         tgroup=[localize(30102)]+[item.rsplit(".",1)[0] for item in files if item.endswith(".xml")]
         # Loop requesting to select a group name until the user either selects one or presses cancel.

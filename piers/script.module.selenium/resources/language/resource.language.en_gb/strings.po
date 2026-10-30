@@ -1,0 +1,117 @@
+# Kodi Media Center language file
+# Addon Name: Browser Launcher
+# Addon id: plugin.program.browserlauncher
+msgid ""
+msgstr ""
+
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: English\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+### Start of the contextitem localization.
+
+msgctxt "#30000"
+msgid "TopControlMarker"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Yes"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Cancel Setup"
+msgstr ""
+
+msgctxt "#30004"
+msgid "OK"
+msgstr ""
+
+msgctxt "#30008"
+msgid "General"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Profile Configuration Details"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Step 1: Select Options"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Step 2: Profile Configuration"
+msgstr ""
+
+
+msgctxt "#30013"
+msgid "Select a Web Browser"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Select the Browser to Use"
+msgstr ""
+
+msgctxt "#30015"
+msgid "A browser selection needs to be made in order to complete setup."
+msgstr ""
+
+msgctxt "#30016"
+msgid "Open Settings Dialog?"
+msgstr ""
+
+msgctxt "#30017"
+msgid "The configured web browser can not be found on the computer."
+msgstr ""
+
+
+msgctxt "#30025"
+msgid "This module is not intended to be called directly. Use the context menu to configure settings."
+msgstr "" 
+
+msgctxt "#30026"
+msgid "Unsupported Operating System Platform."
+msgstr "" 
+
+msgctxt "#30027"
+msgid "Unhandled error during prifile creation. Settings have not been saved."
+msgstr "" 
+
+msgctxt "#30028"
+msgid "Unknown setting name requested from selenium script function getSetting. Setting="
+msgstr "" 
+
+msgctxt "#30029"
+msgid "Unknown function request to selenium script interface. Function="
+msgstr "" 
+
+
+msgctxt "#30030"
+msgid "Configuring the Browser Profile. Please wait..."
+msgstr "" 
+
+msgctxt "#30040"
+msgid "Override default profile path"
+msgstr "" 
+
+msgctxt "#30041"
+msgid "Custom Profile Path:"
+msgstr "" 
+
+msgctxt "#30042"
+msgid "Profile path suffix (non-custom):"
+msgstr "" 
+
+msgctxt "#30043"
+msgid "The custom profile path does not exist. \nCanceling Profile Creation."
+msgstr "" 
+
+msgctxt "#30050"
+msgid "Profile Path:"
+msgstr "" 

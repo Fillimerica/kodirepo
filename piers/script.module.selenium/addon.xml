@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="script.module.selenium" name="Selenium and Web Drivers" version="4.50.0" provider-name="TJF">
+<addon id="script.module.selenium"
+		name="Selenium and Web Drivers"
+		version="4.50.0"
+		provider-name="TJF">
 	<requires>
-		<import addon="xbmc.python" version="3.0.2" />
+		<import addon="xbmc.python" version="3.0.1" />
 		<import addon="script.module.certifi" version="2023.5.7" />
-		<import addon="script.module.urllib3" version="2.2.3"	/>
+		<import addon="script.module.urllib3" version="2.0.2"	/>
+		<import addon="script.module.typing_extensions" version="4.7.1"	/>
+		<import addon="script.module.websocket" version="1.6.4"	/>
+		<import addon="script.module.web-pdb" version="1.0" optional="true"/>l
 	</requires>
+
+	<extension point="xbmc.python.script" library="lib/seleniumConfig/main.py">
+		<provides>executable</provides>
+	</extension>
 	<extension point="xbmc.python.module" library="lib" />
+
 	<extension point="xbmc.addon.metadata">
+		<platform>all</platform>
 		<summary>Selenium automates browsers.</summary>
 		<description>Selenium has the support of some of the largest browser vendors who have taken (or are taking) steps to make Selenium a native part of their browser. It is also the core technology in countless other browser automation tools, APIs and frameworks.</description>
 		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
@@ -14,5 +26,12 @@
 		<assets>
 		<icon>icon.png</icon>
 		</assets>
+		<news>
+		[CR][B]4.50.0[/B]
+		[CR]- First public release.
+		[CR]- Implemented new automated Selenium browser configuration. (No more hand editing ini files.)
+		[CR]- Selenium Python Module plus Integrated Browser Profile Management System.
+		[CR]- Suppports Filrefox, Chrome, Edge on Windows. Linux coming soon.
+		</news>
 	</extension>
 </addon>

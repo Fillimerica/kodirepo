@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<addon id="script.module.browserlauncher" name="Browser Launcher" version="1.0.0" provider-name="TJF">
+<addon id="script.module.browserlauncher" name="Browser Launcher" version="1.0" provider-name="TJF">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
-		<import addon="script.module.web-pdb" version="1.0.0" optional="true"/>
+		<import addon="script.module.web-pdb" version="1.0" optional="true"/>
     </requires>
     <extension point="xbmc.python.script" library="main.py">
 	<provides>executable</provides>
@@ -13,11 +13,19 @@
         <language></language>
         <description lang="en_GB">Launch websites via selected Browser in Kiosk-mode</description>
         <description lang="de_DE">Öffnet Websiten mit dem ausgewählten Browser im Vollbildmodus</description>
-        <email>AddonScriptorDE at yahoo dot de</email>
+        <email></email>
         <website></website>
         <license>GPL-2.0-only</license>
         <assets>
             <icon>icon.png</icon>
         </assets>
+        <news>
+[CR][B]1.0[/B]
+[CR]- Published on github
+[CR]- Major code re-factoring to simplify operation and future editing.
+[CR]- Added support for Android TV boxes.
+[CR][B]0.10[/B]
+[CR]- Initial alpha release. 
+      </news>
     </extension>
 </addon>

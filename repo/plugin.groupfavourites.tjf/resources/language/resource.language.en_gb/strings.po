@@ -194,6 +194,10 @@ msgctxt "#30136"
 msgid "Changing the Item Thumbnail in the Group has been administratively disabled.[CR][CR]Operation canceled."
 msgstr ""
 
+#. Add arguments for running a script prompt
+msgctxt "#30140"
+msgid "Arguments to be Passed to the Script"
+msgstr ""
 
 
 ### This is the end of the contextitem localization.

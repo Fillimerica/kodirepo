@@ -1,43 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<addon id="plugin.groupfavourites.tjf" version="0.3.0" name="Favourite Groups by TJF" provider-name="Fillimerica">
-<requires>
-  <import addon="xbmc.python" version="3.0.1"/>
-  <import addon="script.module.web-pdb" version="1.0" optional="true"/>
-</requires>
-<extension point="xbmc.python.pluginsource" library="main.py">
-  <provides>executable audio video image</provides>
-</extension>
-<extension point="kodi.context.item">
-  <menu id="kodi.core.main">
-    <item library="contextitem.py" args="add">
-      <label>30100</label>
-      <visible>true</visible>
-    </item>
-  </menu>
-</extension>
-<extension point="xbmc.addon.metadata">
-  <summary lang="en_GB">Favourite Groups Manager</summary>
-  <description lang="en_GB">Favourite Groups Manager and Launcher for Kodi</description>
-  <disclaimer lang="en_GB"></disclaimer>
-  <license>GPL-3.0-only	</license>
-  <assets>
-    <icon>resources/images/icon.png</icon>
-    <fanart>resources/images/fanart.jpg</fanart>
-  </assets>
-  <news>
-  [CR][B]0.3.0[/B]
-  [CR]- Contribution from toskaw Group Rename
-  [CR]- Fix web-pdb to make addon work whether it is present or not.
-  [CR][B]0.2.0[/B]
-  [CR]- Implemented new set of context menu features:
-  [CR]- Move Item Up/Down in Group, Change Item Thumbnail in Group, Rename Item in Group.
-  [CR]- Remove Item from Group.
-  [CR]- Implemented Addon settings to restrict any of the operations that can make changes
-  [CR]- to the configuration.
-  [CR][B]0.1.0[/B]
-  [CR]- Implemented new image association with group feature.
-  [CR]- Trap and prevent overwrite of group when adding a new group with the same name.
-  [CR][B]0.0.10[/B]
-  [CR]- Initial alpha release. </news>
-</extension>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="script.module.certifi" name="certifi" version="2023.5.7" provider-name="Certifi">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Certifi: Python SSL Certificates</summary>
+    <description lang="en_GB">Certifi is a carefully curated collection of Root Certificates for validating the trustworthiness of SSL certificates while verifying the identity of TLS hosts. It has been extracted from the Requests project.</description>
+    <license>MPL-2.0</license>
+    <website>https://github.com/certifi/python-certifi</website>
+    <source>https://github.com/certifi/python-certifi</source>
+    <assets>
+      <icon>resources/icon.png</icon>
+    </assets>
+  </extension>
 </addon>

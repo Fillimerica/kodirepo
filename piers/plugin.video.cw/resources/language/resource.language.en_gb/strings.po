@@ -1,0 +1,78 @@
+# Kodi Media Center language file
+# Addon Name: Browser Launcher
+# Addon id: plugin.program.browserlauncher
+msgid ""
+msgstr ""
+
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language-Team: English\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+### Start of the contextitem localization.
+
+msgctxt "#30000"
+msgid ""
+msgstr ""
+
+msgctxt "#30001"
+msgid "Yes"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30010"
+msgid "The selenium browser has not been configured.\nDo you want to configure it now?"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Invalid or unknown browser type returned from Selenium. Can not set the browser options. Type="
+msgstr ""
+
+msgctxt "#30012"
+msgid "Selenium threw an exception during webdriver initialization. Browser Type="
+msgstr ""
+
+msgctxt "#30020"
+msgid "List Building from Cache"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Retrieving Series List from Website"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Web Data Processing"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Web Data Filtering"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Dupe Removal"
+msgstr ""
+
+msgctxt "#30025"
+msgid "List Building"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Retrieving Series Data from Website"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Extracting Episode Info"
+msgstr ""
+
+msgctxt "#30032"
+msgid "WARNING SEASON DATA MISSING"
+msgstr ""
+
+msgctxt "#30033"
+msgid "No Episodes Found for Series"
+msgstr ""

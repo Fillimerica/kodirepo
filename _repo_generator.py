@@ -10,6 +10,7 @@ import shutil
 import sys
 import zipfile
 import re
+#import web_pdb
 
 from xml.etree import ElementTree
 
@@ -265,7 +266,8 @@ class Generator:
         for ext in root.findall("extension"):
             if ext.get("point") in ["xbmc.addon.metadata", "kodi.addon.metadata"]:
                 assets = ext.find("assets")
-                if len(assets)==0:
+# TF 10/2026 Bug corrected assets is an object and is None if there are no asset tags in the metadata
+                if assets is None:
                     continue
                 for art in [a for a in assets if a.text]:
                     copyfiles.append(os.path.normpath(art.text))
@@ -287,6 +289,7 @@ class Generator:
         """
         Generates a zip for each found addon, and updates the addons.xml file accordingly.
         """
+        #web_pdb.set_trace()
         if not os.path.exists(addons_xml_path):
             addons_root = ElementTree.Element('addons')
             addons_xml = ElementTree.ElementTree(addons_root)
