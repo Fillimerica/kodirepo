@@ -11,7 +11,12 @@
 import xbmc
 import xbmcgui
 import xbmcaddon
-import web_pdb
+# Check to see if the debugger is installed as an optional dependency.
+try:
+    import web_pdb
+    IsWebPDB = True
+except:
+    IsWebPDB = False
 
 # Define support function shortcuts.
 translate=xbmcaddon.Addon().getLocalizedString

@@ -114,7 +114,9 @@ def setBrowser(sFieldID):
     # This specialized function reads the list of browsers for the current platform and allows the user to select one.
     # Interaction with the settings.xml file uses hard-coded field ID suffix of "Index"
     # Get the current value of sFieldID (str)
-    #web_pdb.set_trace()
+    if IsWebPDB:
+        pass # needed to complete if statement when debugging is disabled.
+        #web_pdb.set_trace()
     
     sFieldIndexID=sFieldID+"Index"
     sFieldProfilePath=sFieldID+"Profile"
@@ -124,23 +126,20 @@ def setBrowser(sFieldID):
     if not isValid:
         return
     curBrowIndex=int(curBrowIndexStr)
-    # Translate the unique index into the real index for the Kodi select dialog.
     if curBrowIndex < 0:
-        curAbsIndex=-1
         curProfile=""
     else:
-        curAbsIndex = next((i for i, brow in enumerate(platformBrowList) if brow.index == curBrowIndex), -1)
         isValid, curProfile=getGuiSetting(sFieldProfilePath)
         if not isValid:
             return
 
     # Build a list of just the browser names for the Kodi select dialog.
-    browListNames=[brow.name for brow in platformBrowList]
+    browListNames=[brow.description for brow in platformBrowList]
     
     selValue=-1
     while selValue == -1:
         # Obtain the desired browser selection from the Kodi GUI 
-        selValue=xbmcgui.Dialog().select(translation(30014),browListNames,0,curAbsIndex)
+        selValue=xbmcgui.Dialog().select(translation(30014),browListNames,0,curBrowIndex)
         # selValue will be -1 if the user cancelled out of the dialog.
         if selValue == -1:
             if not curProfile:
@@ -151,7 +150,7 @@ def setBrowser(sFieldID):
             return
         else:
             # User selected a browser. If it has changed or a profile does not exist, create the profile path.
-            if (not curProfile) or (selValue != curAbsIndex):
+            if (not curProfile) or (selValue != curBrowIndex):
                 # Need to create the profile path for the selected browser.
                 # See if a custom path override has been selected.
                 isValid, proPathOverride=getGuiSetting("ProfilePathOverride")
@@ -177,7 +176,7 @@ def setBrowser(sFieldID):
                 elif platformBrowList[selValue].name.lower() == "chrome":
                     # Call the Chrome specific initialization code.
                     createProfileChrome(curProfile,selValue)
-                elif platformBrowList[selValue].name.lower() == "edge":
+                elif platformBrowList[selValue].name.lower() == "msedge":
                     # Call the Edge specific initialization code.
                     createProfileEdge(curProfile,selValue)
                 else:
@@ -187,8 +186,8 @@ def setBrowser(sFieldID):
                 # Final validation check prior to saving
                 if (curProfile) and (selValue != -1):
                     # Save the selected browser information into the settings.
-                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].name)
-                    addon.setSettingInt(id=sFieldIndexID,value=platformBrowList[selValue].index)
+                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].description)
+                    addon.setSettingInt(id=sFieldIndexID,value=selValue)
                     addon.setSetting(id=sFieldProfilePath,value=curProfile)
                     addon.setSetting(id="BrowserProfileButton",value="Select to Show")
                 else:
