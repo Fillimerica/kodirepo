@@ -4,8 +4,10 @@
 # C 2026 Thomas Filliman
 
 import xbmc
+import xbmcgui
 import xbmcaddon
 import xbmcvfs
+import subprocess
 from installedbrowsers.browsers import getInstalledBrowsers
 # Check to see if the debugger is installed as an optional dependency.
 try:
@@ -30,6 +32,9 @@ addon_name = addon.getAddonInfo('name')
 addon_id = addon.getAddonInfo('id')
 addon_path=xbmcvfs.translatePath(addon.getAddonInfo('path'))
 addon_data_path=xbmcvfs.translatePath(f"special://profile/addon_data/{addon_id}")
+
+# Define support function shortcuts. (translation is a function, even though it looks like a variable)
+translation=addon.getLocalizedString
 
 def getBrowserList(platformID):
     # This function accepts a platform ID string and returns a list of

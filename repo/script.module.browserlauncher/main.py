@@ -13,6 +13,7 @@ import urllib.parse
 import xbmc
 import xbmcaddon
 import xbmcgui
+import xbmcvfs
 import subprocess
 import browserList
 import guiSettings
@@ -26,7 +27,8 @@ except:
 
 addon = xbmcaddon.Addon()
 addon_name = addon.getAddonInfo('name')
-profileFolder=addon.getAddonInfo('profile')
+addon_id = addon.getAddonInfo('id')
+addon_data_path=xbmcvfs.translatePath(f"special://profile/addon_data/{addon_id}")
 addonsettings= addon.getSettings()
 
 # Define defaults for the browser parameters
@@ -133,13 +135,13 @@ def setBrowser(sFieldID):
                     match platformBrowList[selValue].name.lower():
                         case "firefox":
                             # Call the Firefox specific initialization code.
-                            createProfileFirefox(curProfile,selValue)
+                            browserList.createProfileFirefox(curProfile,selValue)
                         case "chrome":
                             # Call the Chrome specific initialization code.
-                            createProfileChrome(curProfile,selValue)
+                            browserList.createProfileChrome(curProfile,selValue)
                         case "msedge":
                             # Call the Edge specific initialization code.
-                            createProfileEdge(curProfile,selValue)
+                            browserList.createProfileEdge(curProfile,selValue)
                         case _:
                             xbmcgui.Dialog().ok(addon_name,f"{translation(30031)}{platformBrowList[selValue].name}")
                             return
@@ -239,6 +241,12 @@ if len(sys.argv) > 1:
             case "setting":
                 if param1[1]=="Browser":
                     setBrowser(param1[1])
+                elif param1[1]=="BrowserProfile":
+                    # This call displays the full BrowserProfile path in a dialog box 
+                    # large enough to show the entire value.
+                    isValid, browserProfile=guiSettings.getGuiSetting("BrowserProfile")
+                    if isValid:
+                        xbmcgui.Dialog().ok("Profile Path",browserProfile)
                 exitNow=True
                 break
             case "url":

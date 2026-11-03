@@ -98,13 +98,13 @@ def setBrowser(sFieldID):
                 match platformBrowList[selValue].name.lower():
                     case "firefox":
                         # Call the Firefox specific initialization code.
-                        createProfileFirefox(curProfile,selValue)
+                        browserList.createProfileFirefox(curProfile,selValue)
                     case "chrome":
                         # Call the Chrome specific initialization code.
-                        createProfileChrome(curProfile,selValue)
+                        browserList.createProfileChrome(curProfile,selValue)
                     case "msedge":
                         # Call the Edge specific initialization code.
-                        createProfileEdge(curProfile,selValue)
+                        browserList.createProfileEdge(curProfile,selValue)
                     case _:
                         xbmcgui.Dialog().ok(addon_name,f"{translation(30031)}{platformBrowList[selValue].name}")
                         return
@@ -146,7 +146,7 @@ if len(sys.argv) > 1:
                     # This call displays the full BrowserProfile path in a dialog box 
                     # large enough to show the entire value.
                     #web_pdb.set_trace()
-                    isValid, browserProfile=getGuiSetting("BrowserProfile")
+                    isValid, browserProfile=guiSettings.getGuiSetting("BrowserProfile")
                     if isValid:
                         xbmcgui.Dialog().ok("Profile Path",browserProfile)
             case _:
