@@ -126,12 +126,21 @@ def getSeleniumWebDriver(headless):
                 options.add_argument(BROWSER_PROFILE)
                 webDriver = webdriver.Firefox(options=options)
             except Exception as e:
-                msg=f"{translation(30012)}{BROWSER_TYPE} Error: {e}"
+                msg=f"{translate(30012)}{BROWSER_TYPE} Error: {e}"
                 xbmc.log(msg,xbmc.LOGERROR)
-                xbmcgui.Dialog().ok(addon_name,msg)
+                xbmcgui.Dialog().ok(ADDON_NAME,msg)
         case "chrome":
-            pass
-        case "edge":
+            try:
+                options= webdriver.ChromeOptions()
+                if headless:
+                    options.add_argument("--headless=new")
+                options.add_argument(f"--user-data-dir={BROWSER_PROFILE}")
+                webDriver = webdriver.Chrome(options=options)
+            except Exception as e:
+                msg=f"{translate(30012)}{BROWSER_TYPE} Error: {e}"
+                xbmc.log(msg,xbmc.LOGERROR)
+                xbmcgui.Dialog().ok(ADDON_NAME,msg)
+        case "msedge":
             try:
                 options= webdriver.EdgeOptions()
                 if headless:
@@ -139,12 +148,12 @@ def getSeleniumWebDriver(headless):
                 options.add_argument(f"--user-data-dir={BROWSER_PROFILE}")
                 webDriver = webdriver.Edge(options=options)
             except Exception as e:
-                msg=f"{translation(30012)}{BROWSER_TYPE} Error: {e}"
+                msg=f"{translate(30012)}{BROWSER_TYPE} Error: {e}"
                 xbmc.log(msg,xbmc.LOGERROR)
-                xbmcgui.Dialog().ok(addon_name,msg)
+                xbmcgui.Dialog().ok(ADDON_NAME,msg)
         case _:
-            xbmc.log(f"{translation(30011)}{BROWSER_TYPE}",xbmc.LOGERROR)
-            xbmcgui.Dialog().ok(addon_name,f"{translation(30011)}{BROWSER_TYPE}")
+            xbmc.log(f"{translate(30011)}{BROWSER_TYPE}",xbmc.LOGERROR)
+            xbmcgui.Dialog().ok(ADDON_NAME,f"{translate(30011)}{BROWSER_TYPE}")
     return webDriver
 
 # Main addon support functions

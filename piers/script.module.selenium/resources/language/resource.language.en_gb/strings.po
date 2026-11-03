@@ -1,6 +1,6 @@
 # Kodi Media Center language file
-# Addon Name: Browser Launcher
-# Addon id: plugin.program.browserlauncher
+# Addon Name: Selenium
+# Addon id: script.module.selenium
 msgid ""
 msgstr ""
 
@@ -10,8 +10,6 @@ msgstr ""
 "Language-Team: English\n"
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-### Start of the contextitem localization.
 
 msgctxt "#30000"
 msgid "TopControlMarker"
@@ -42,13 +40,12 @@ msgid "Profile Configuration Details"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Step 1: Select Options"
+msgid "Step 1: Profile Options"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Step 2: Profile Configuration"
+msgid "Step 2: Browser Configuration"
 msgstr ""
-
 
 msgctxt "#30013"
 msgid "Select a Web Browser"
@@ -70,7 +67,6 @@ msgctxt "#30017"
 msgid "The configured web browser can not be found on the computer."
 msgstr ""
 
-
 msgctxt "#30025"
 msgid "This module is not intended to be called directly. Use the context menu to configure settings."
 msgstr "" 
@@ -84,16 +80,19 @@ msgid "Unhandled error during prifile creation. Settings have not been saved."
 msgstr "" 
 
 msgctxt "#30028"
-msgid "Unknown setting name requested from selenium script function getSetting. Setting="
+msgid "Unknown setting name requested from addon script function getSetting. Setting="
 msgstr "" 
 
 msgctxt "#30029"
-msgid "Unknown function request to selenium script interface. Function="
+msgid "Unknown function request to addon script interface. Function="
 msgstr "" 
-
 
 msgctxt "#30030"
 msgid "Configuring the Browser Profile. Please wait..."
+msgstr "" 
+
+msgctxt "#30031"
+msgid "Unsupported browser selected. Browser Name="
 msgstr "" 
 
 msgctxt "#30040"
@@ -115,3 +114,22 @@ msgstr ""
 msgctxt "#30050"
 msgid "Profile Path:"
 msgstr "" 
+
+# Help messages section.
+
+msgctxt "#30070"
+msgid "Disable to use the default profile for the selected browser, enable to create a separate profile."
+msgstr ""
+
+msgctxt "#30071"
+msgid "Disable to create or use a profile path in the addon user_data folder, enable to specify a specific path for the profile."
+msgstr ""
+
+msgctxt "#30072"
+msgid "Select a folder to use for the profile. If the folder is empty a new profile will be created."
+msgstr ""
+
+msgctxt "#30076"
+msgid "Select an installed web browser to use."
+msgstr ""
+

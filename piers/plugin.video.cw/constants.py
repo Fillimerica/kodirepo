@@ -25,8 +25,7 @@ MYLISTFQFN=DATA_DIR / 'MyList.pkl'
 # Main title for the plugin.
 ADDON_NAME=Addon().getAddonInfo('name')
 
-
-# Shortcuts (behave like a function but reduce typing in the source)
+# Define support function shortcuts. (translation is a function, even though it looks like a variable)
 translate=Addon().getLocalizedString
 
 # Check to see if the debugger is installed as an optional dependency.

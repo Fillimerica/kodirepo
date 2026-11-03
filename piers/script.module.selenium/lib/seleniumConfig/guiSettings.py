@@ -35,11 +35,10 @@ SettingsMap: list[settingsMapType] = [
     settingsMapType(name="TopControlMarker",offset=0,ctrlType="label2",sCheck="TopControlSanityCheck"),
     settingsMapType(name="ProfilePathOverride",offset=1,ctrlType="bool"),
     settingsMapType(name="ProfilePathCustom",offset=2,ctrlType="label2",sCheck=translate(30041)),
-    settingsMapType(name="ProfileSuffix",offset=3,ctrlType="text"),
-    settingsMapType(name="Browser",offset=6,ctrlType="label2",sCheck=translate(30013)),
-    settingsMapType(name="BrowserIndex",offset=7,ctrlType="text"),
-    settingsMapType(name="BrowserProfileButton",offset=8,ctrlType="label2",sCheck=translate(30050)),
-    settingsMapType(name="BrowserProfile",offset=9,ctrlType="text")
+    settingsMapType(name="Browser",offset=5,ctrlType="label2",sCheck=translate(30013)),
+    settingsMapType(name="BrowserIndex",offset=6,ctrlType="text"),
+    settingsMapType(name="BrowserProfileButton",offset=7,ctrlType="label2",sCheck=translate(30050)),
+    settingsMapType(name="BrowserProfile",offset=8,ctrlType="text")
     ]
 
 # Addon global constants
@@ -193,3 +192,19 @@ def getSetting(settingName):
 
     # Send the return code and the data back to the caller.
     return tErrorCode, retVal
+
+def getGuiSetting(settingName,errReport=3):
+    # This function is a shortcut helper that handles calling the guiSettings module
+    # and handling the default error reporting.
+    # In: settingName = Setting name of the setting to get the current value.
+    # In: [optional] errReport = how to handle error reporting. Integer code:
+    #   0=No error reporting, return error code as 2nd variable.
+    #   1=Log to the Kodi log file, return error code as the 2nd variable.
+    #   2=Display an error dialog to the user, return error code as the 2nd variable.
+    #   3=[default] Both Log and Display, return error code as the 2nd variable.
+    errorCode, retVal=getSetting(settingName)
+    if errorCode != "":
+        displayErrorMessage(errorCode,settingName,errReport)
+        return False,errorCode
+    return True,retVal
+

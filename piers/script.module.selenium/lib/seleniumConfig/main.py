@@ -6,6 +6,7 @@
 # Version 1.0 - October 2026
 
 import sys
+import os
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -33,83 +34,6 @@ platformBrowList=browserList.getBrowserList(platformID)
 # Define support function shortcuts. (translation is a function, even though it looks like a variable)
 translation=addon.getLocalizedString
 
-# Helper function to handle interface calls with guiSettings module.
-def getGuiSetting(settingName,errReport=3):
-    # This function is a shortcut helper that handles calling the guiSettings module
-    # and handling the default error reporting.
-    # In: settingName = Setting name of the setting to get the current value.
-    # In: [optional] errReport = how to handle error reporting. Integer code:
-    #   0=No error reporting, return error code as 2nd variable.
-    #   1=Log to the Kodi log file, return error code as the 2nd variable.
-    #   2=Display an error dialog to the user, return error code as the 2nd variable.
-    #   3=[default] Both Log and Display, return error code as the 2nd variable.
-    errorCode, retVal=guiSettings.getSetting(settingName)
-    if errorCode != "":
-        guiSettings.displayErrorMessage(errorCode,settingName,errReport)
-        return False,errorCode
-    return True,retVal
-
-def createProfileFirefox(profile_path: str, browIndex: int):
-    # Display a status message to the user as this process may taker some time.
-    p_dialog = xbmcgui.DialogProgressBG()
-    p_dialog.create(addon_name,translation(30030))
-    
-    # Prep the target profile folder to make sure it exists.
-    xbmcvfs.mkdirs(profile_path)
-    
-    # For firefox, copy the user.js file into the empty profile to control Firefox startup behavior
-    user_jsFQFN=xbmcvfs.validatePath(addon_path+"/resources/firefox/user.js")
-    user_jsDest=xbmcvfs.validatePath(profile_path+"/user.js")
-    xbmcvfs.copy(user_jsFQFN,user_jsDest)    
-    
-    # Build the command-line string to execute
-    htmlFile=xbmcvfs.validatePath(addon_path+"/resources/firefox/FirefoxIndex.html")
-    cmd = [ platformBrowList[browIndex].FQFN, "-no-remote", "-wait-for-browser", "-CreateProfile","Selenium",
-    "-profile", f"{profile_path}", htmlFile ]
-
-    # Pass the profile creationn command to the browser.
-    process = subprocess.run(cmd)
-   
-    # All finished, remove the processing message
-    p_dialog.close()
-
-def createProfileEdge(profile_path: str, browIndex: int):
-    # Display a status message to the user as this process may taker some time.
-    p_dialog = xbmcgui.DialogProgressBG()
-    p_dialog.create(addon_name,translation(30030))
-    
-    # Prep the target profile folder to make sure it exists.
-    xbmcvfs.mkdirs(profile_path)
-    
-    # Build the command-line string to execute
-    htmlFile=xbmcvfs.validatePath(addon_path+"/resources/chrome/EdgeIndex.html")
-    cmd = [ platformBrowList[browIndex].FQFN, f"--user-data-dir={profile_path}", "--no-first-run", htmlFile ]
-
-    # Pass the profile creationn command to the browser.
-    process = subprocess.run(cmd)
-   
-    # All finished, remove the processing message
-    p_dialog.close()
-
-def createProfileChrome(profile_path: str, browIndex: int):
-    # Display a status message to the user as this process may taker some time.
-    p_dialog = xbmcgui.DialogProgressBG()
-    p_dialog.create(addon_name,translation(30030))
-    
-    # Prep the target profile folder to make sure it exists.
-    xbmcvfs.mkdirs(profile_path)
-    
-    # Build the command-line string to execute
-    htmlFile=xbmcvfs.validatePath(addon_path+"/resources/chrome/EdgeIndex.html")
-    cmd = [ platformBrowList[browIndex].FQFN, f"--user-data-dir={profile_path}", "--no-first-run", htmlFile ]
-
-    # Pass the profile creationn command to the browser.
-    process = subprocess.run(cmd)
-   
-    # All finished, remove the processing message
-    p_dialog.close()
-
-
 def setBrowser(sFieldID):
     # This specialized function reads the list of browsers for the current platform and allows the user to select one.
     # Interaction with the settings.xml file uses hard-coded field ID suffix of "Index"
@@ -122,15 +46,17 @@ def setBrowser(sFieldID):
     sFieldProfilePath=sFieldID+"Profile"
     
     # Retrieve the current browser index, in case there is already a configured browser for this addon.
-    isValid, curBrowIndexStr=getGuiSetting(sFieldIndexID)
+    isValid, curBrowIndexStr=guiSettings.getGuiSetting(sFieldIndexID)
     if not isValid:
+        xbmc.log(f"{translation(30028)}{sFieldIndexID}",xbmc.LOGERROR)
         return
     curBrowIndex=int(curBrowIndexStr)
     if curBrowIndex < 0:
         curProfile=""
     else:
-        isValid, curProfile=getGuiSetting(sFieldProfilePath)
+        isValid, curProfile=guiSettings.getGuiSetting(sFieldProfilePath)
         if not isValid:
+            xbmc.log(f"{translation(30028)}{sFieldProfilePath}",xbmc.LOGERROR)
             return
 
     # Build a list of just the browser names for the Kodi select dialog.
@@ -153,40 +79,40 @@ def setBrowser(sFieldID):
             if (not curProfile) or (selValue != curBrowIndex):
                 # Need to create the profile path for the selected browser.
                 # See if a custom path override has been selected.
-                isValid, proPathOverride=getGuiSetting("ProfilePathOverride")
+                isValid, proPathOverride=guiSettings.getGuiSetting("ProfilePathOverride")
                 if not isValid:
+                    xbmc.log(f"{translation(30028)}ProfilePathOverride",xbmc.LOGERROR)
                     return
                 if proPathOverride:
-                    isValid, curProfile=getGuiSetting("ProfilePathCustom")
+                    isValid, curProfile=guiSettings.getGuiSetting("ProfilePathCustom")
                     if not isValid:
+                        xbmc.log(f"{translation(30028)}ProfilePathCustom",xbmc.LOGERROR)
                         return
                     if not xbmcvfs.exists(curProfile):
                         xbmcgui.Dialog().ok(addon_name,translation(30043))
                         return
                 else:
-                    isValid, profileSuffix=getGuiSetting("ProfileSuffix")
-                    if not isValid:
-                        return
-                    curProfile=xbmcvfs.validatePath(addon_data_path+"/"+platformBrowList[selValue].name+"/"+profileSuffix+"/")
-
+                    curProfile=xbmcvfs.validatePath(addon_data_path+"/"+platformBrowList[selValue].name+"/")
+                # curProfile now set to the desired isolated profile. Create it.
                 # Call the browser specific profile creation function.
-                if platformBrowList[selValue].name.lower() == "firefox":
-                    # Call the Firefox specific initialization code.
-                    createProfileFirefox(curProfile,selValue)
-                elif platformBrowList[selValue].name.lower() == "chrome":
-                    # Call the Chrome specific initialization code.
-                    createProfileChrome(curProfile,selValue)
-                elif platformBrowList[selValue].name.lower() == "msedge":
-                    # Call the Edge specific initialization code.
-                    createProfileEdge(curProfile,selValue)
-                else:
-                    xbmcgui.Dialog().ok(addon_name,translation(30026))
-                    return
+                match platformBrowList[selValue].name.lower():
+                    case "firefox":
+                        # Call the Firefox specific initialization code.
+                        createProfileFirefox(curProfile,selValue)
+                    case "chrome":
+                        # Call the Chrome specific initialization code.
+                        createProfileChrome(curProfile,selValue)
+                    case "msedge":
+                        # Call the Edge specific initialization code.
+                        createProfileEdge(curProfile,selValue)
+                    case _:
+                        xbmcgui.Dialog().ok(addon_name,f"{translation(30031)}{platformBrowList[selValue].name}")
+                        return
 
                 # Final validation check prior to saving
                 if (curProfile) and (selValue != -1):
                     # Save the selected browser information into the settings.
-                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].description)
+                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].name)
                     addon.setSettingInt(id=sFieldIndexID,value=selValue)
                     addon.setSetting(id=sFieldProfilePath,value=curProfile)
                     addon.setSetting(id="BrowserProfileButton",value="Select to Show")
@@ -195,6 +121,13 @@ def setBrowser(sFieldID):
             # Exit the while loop after the profile was created or left unchanged     
             break
     # End of while loop
+
+def setLinuxPermissions():
+    # This function makes sure that the selenium-manager on Linux
+    # has the correct permissions to be executed.
+    selMgrLinux=xbmcvfs.validatePath(addon_path+"/lib/selenium/webdriver/common/linux-x86_64/selenium-manager")
+    if os.path.isfile(selMgrLinux):
+        os.chmod(selMgrLinux, 0o755)
 
 # Main called code starts here.    
 if len(sys.argv) > 1:
@@ -206,6 +139,9 @@ if len(sys.argv) > 1:
                 if param1[1]=="Browser":
                     # This call processes the selected browser and establishes the profile path.
                     setBrowser(param1[1])
+                    # Need to set file permission on the linux selenium-manager so it can be executed.
+                    if platformID=="system.platform.linux":
+                        setLinuxPermissions()
                 elif param1[1]=="BrowserProfile":
                     # This call displays the full BrowserProfile path in a dialog box 
                     # large enough to show the entire value.

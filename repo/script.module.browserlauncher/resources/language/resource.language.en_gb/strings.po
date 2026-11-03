@@ -11,7 +11,9 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-### Start of the contextitem localization.
+msgctxt "#30000"
+msgid "TopControlMarker"
+msgstr ""
 
 msgctxt "#30001"
 msgid "Cancel"
@@ -21,20 +23,28 @@ msgctxt "#30002"
 msgid "Yes"
 msgstr ""
 
+msgctxt "#30003"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30004"
+msgid "OK"
+msgstr ""
+
 msgctxt "#30008"
 msgid "General"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Use custom Browser/script path"
+msgid "Profile Configuration Details"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Browser/script path"
+msgid "Step 1: Profile Options"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Use an isolated user profile?"
+msgid "Step 2: Browser Configuration"
 msgstr ""
 
 msgctxt "#30013"
@@ -65,77 +75,73 @@ msgctxt "#30026"
 msgid "Unsupported Operating System Platform."
 msgstr "" 
 
+msgctxt "#30027"
+msgid "Unhandled error during profile creation. Settings have not been saved."
+msgstr "" 
 
+msgctxt "#30028"
+msgid "Unknown setting name requested from addon script function getSetting. Setting="
+msgstr "" 
 
+msgctxt "#30029"
+msgid "Unknown function request to addon script interface. Function="
+msgstr "" 
 
+msgctxt "#30030"
+msgid "Configuring the Browser Profile. Please wait..."
+msgstr "" 
 
+msgctxt "#30031"
+msgid "Unsupported browser selected. Browser Name="
+msgstr "" 
 
-### Old #s
+msgctxt "#30040"
+msgid "Override default profile path"
+msgstr "" 
 
-msgctxt "#30001"
-msgid "Add Website"
-msgstr ""
+msgctxt "#30041"
+msgid "Custom Profile Path:"
+msgstr "" 
 
-msgctxt "#30002"
-msgid "Remove Website"
-msgstr ""
+msgctxt "#30042"
+msgid "Profile path suffix (non-custom):"
+msgstr "" 
 
-msgctxt "#30003"
-msgid "Title"
-msgstr ""
+msgctxt "#30043"
+msgid "The custom profile path does not exist. \nCanceling Profile Creation."
+msgstr "" 
 
-msgctxt "#30004"
-msgid "URL"
-msgstr ""
+msgctxt "#30050"
+msgid "Profile Path:"
+msgstr "" 
 
-msgctxt "#30005"
-msgid "Browser not found"
-msgstr ""
-
-msgctxt "#30006"
-msgid "Edit Website Settings"
-msgstr ""
-
-msgctxt "#30007"
-msgid "Thumbnail"
-msgstr ""
-
-msgctxt "#30008"
-msgid "General"
-msgstr ""
-
-msgctxt "#30009"
-msgid "Stop Kodi playback?"
-msgstr ""
-
-msgctxt "#30010"
+msgctxt "#30060"
 msgid "Use custom Browser/script path"
 msgstr ""
 
-msgctxt "#30011"
+msgctxt "#30061"
 msgid "Browser/script path"
 msgstr ""
 
-msgctxt "#30012"
-msgid "Use own user profile (Chrome, Firefox, Opera)"
+msgctxt "#30062"
+msgid "Use an isolated user profile?"
 msgstr ""
 
-msgctxt "#30013"
-msgid "Webbrowser"
+# Help messages section.
+
+msgctxt "#30070"
+msgid "Disable to use the default profile for the selected browser, enable to create a separate profile."
 msgstr ""
 
-msgctxt "#30016"
-msgid "Use kiosk mode?"
+msgctxt "#30071"
+msgid "Disable to create or use a profile path in the addon user_data folder, enable to specify a specific path for the profile."
 msgstr ""
 
-msgctxt "#30017"
-msgid "Custom Browser"
+msgctxt "#30072"
+msgid "Select a folder to use for the profile. If the folder is empty a new profile will be created."
 msgstr ""
 
-msgctxt "#30025"
-msgid "No parameter passed, must pass at least 1 value to be valid."
-msgstr "" 
+msgctxt "#30076"
+msgid "Select an installed web browser to use."
+msgstr ""
 
-msgctxt "#30026"
-msgid "Unsupported Operating System Platform."
-msgstr "" 
