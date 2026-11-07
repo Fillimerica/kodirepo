@@ -36,11 +36,11 @@ POSSIBLE_BROWSER_NAMES = dict(
 )
 
 # get all installed browsers
-def getbrowsers():
+def getBrowsers():
     match platform.architecture()[0]:
-        case OS.WIN32:    # pragma: no cover
+        case "32bit":    # pragma: no cover
             return _get_unique_browsers(winreg.KEY_WOW64_32KEY)
-        case OS.WIN64:
+        case "64bit":
             return _get_unique_browsers(winreg.KEY_WOW64_64KEY)
     return None
 
@@ -70,7 +70,8 @@ def _get_browsers_from_registry(tree: int, access: int):
                     continue
                 instBrowList.append(instBrowType(
                     name=POSSIBLE_BROWSERS.get(description, "unknown"),
-                    location=cmd)
+                    location=cmd,
+                    description=description)
                 )
     except FileNotFoundError:  # pragma: no cover
         pass
@@ -89,7 +90,7 @@ def _get_unique_browsers(winreg_key):
     instBrowList=[]
     seen=set()
     for brow in (browsers_local_machine + browsers_current_user):
-        identical=(brow.name,brow.loc)
+        identical=(brow.name,brow.location,brow.description)
         if identical not in seen:
             seen.add(identical)
             instBrowList.append(brow)

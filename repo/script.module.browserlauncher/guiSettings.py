@@ -37,8 +37,8 @@ SettingsMap: list[settingsMapType] = [
     settingsMapType(name="ProfilePathOverride",offset=2,ctrlType="bool"),
     settingsMapType(name="ProfilePathCustom",offset=3,ctrlType="label2",sCheck=translate(30041)),
     settingsMapType(name="Browser",offset=6,ctrlType="label2",sCheck=translate(30013)),
-    settingsMapType(name="BrowserIndex",offset=7,ctrlType="text"),
-    settingsMapType(name="BrowserProfileButton",offset=8,ctrlType="label2",sCheck=translate(30050)),
+    settingsMapType(name="BrowserProfileButton",offset=7,ctrlType="label2",sCheck=translate(30050)),
+    settingsMapType(name="BrowserFQFN",offset=8,ctrlType="text"),
     settingsMapType(name="BrowserProfile",offset=9,ctrlType="text")
     ]
 

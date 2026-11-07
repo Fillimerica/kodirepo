@@ -36,9 +36,10 @@ SettingsMap: list[settingsMapType] = [
     settingsMapType(name="ProfilePathOverride",offset=1,ctrlType="bool"),
     settingsMapType(name="ProfilePathCustom",offset=2,ctrlType="label2",sCheck=translate(30041)),
     settingsMapType(name="Browser",offset=5,ctrlType="label2",sCheck=translate(30013)),
-    settingsMapType(name="BrowserIndex",offset=6,ctrlType="text"),
-    settingsMapType(name="BrowserProfileButton",offset=7,ctrlType="label2",sCheck=translate(30050)),
-    settingsMapType(name="BrowserProfile",offset=8,ctrlType="text")
+    settingsMapType(name="BrowserProfileButton",offset=6,ctrlType="label2",sCheck=translate(30050)),
+    settingsMapType(name="BrowserFQFN",offset=7,ctrlType="text"),
+    settingsMapType(name="BrowserProfile",offset=8,ctrlType="text"),
+    settingsMapType(name="BrowserType",offset=9,ctrlType="text")
     ]
 
 # Addon global constants

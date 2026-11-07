@@ -10,6 +10,7 @@
 import sys
 import os
 import urllib.parse
+import shlex
 import xbmc
 import xbmcaddon
 import xbmcgui
@@ -37,8 +38,9 @@ stopPlayback='yes'
 useKiosk='yes'
 userAgent=''
 
-platformID=browserList.getPlatformID()
-platformBrowList=browserList.getBrowserList(platformID)
+#platformID=browserList.getPlatformID()
+#platformBrowList=browserList.getBrowserList(platformID)
+from browserList import platformID,platformBrowList,IsFlatpak
 
 # Define support function shortcuts. (translation is a function, even though it looks like a variable)
 translation=addon.getLocalizedString
@@ -50,13 +52,11 @@ def readSettings():
     global browserProfile
     
     # Read in the settings from Settings.xml
-    browIndex=addonsettings.getInt('BrowserIndex') ## Index into master browser configuration for the selected browser.
-    if (browIndex > -1) and (browIndex < len(platformBrowList)):
-        selBrowser=platformBrowList[browIndex]
-    else:
-        selBrowser=None
+    # Uses the FQFN for the browser as a key, since the list is dynamically generated.
+    browFQFN=addonsettings.getString('BrowserFQFN')
+    selBrowser=next((brow for brow in platformBrowList if brow.FQFN==browFQFN), None)
 
-    useIsolatedProfile=addonsettings.getBool('useIsolatedProfile') ## Whether to use the default browser profile or a custome one.
+    useIsolatedProfile=addonsettings.getBool('useIsolatedProfile') ## Whether to use the default browser profile or a custom one.
     if useIsolatedProfile:
         browserProfile=addonsettings.getString('BrowserProfile')
     else:
@@ -73,25 +73,32 @@ def setBrowser(sFieldID):
         #web_pdb.set_trace()
     
     # Get the current value of sFieldID (str)
-    sFieldIndexID=sFieldID+"Index"
+    sFieldFQFN=sFieldID+"FQFN"
     sFieldProfilePath=sFieldID+"Profile"
     
     # Retrieve the current browser index, in case there is already a configured browser for this addon.
-    isValid, curBrowIndexStr=guiSettings.getGuiSetting(sFieldIndexID)
+    isValid, curBrowFQFN=guiSettings.getGuiSetting(sFieldFQFN)
     if not isValid:
-        xbmc.log(f"{translation(30028)}{sFieldIndexID}",xbmc.LOGERROR)
+        xbmc.log(f"{translation(30028)}{sFieldFQFN}",xbmc.LOGERROR)
         return
-    curBrowIndex=int(curBrowIndexStr)
-    if curBrowIndex < 0:
+    if curBrowFQFN=="-not configured-":
         curProfile=""
     else:
         isValid, curProfile=guiSettings.getGuiSetting(sFieldProfilePath)
         if not isValid:
             xbmc.log(f"{translation(30028)}{sFieldProfilePath}",xbmc.LOGERROR)
             return
-
+    # platformBrowList is initialized upon module load. If it is empty and IsFlatpak is true, then 
+    # perhaps the override has not been configured. Log and advise the user.
+    if not platformBrowList:
+        if IsFlatpak:
+            xbmc.log(f"{translation(30034)}{sFieldProfilePath}",xbmc.LOGERROR)
+            xbmcgui.Dialog().ok(addon_name,translation(30034))
+    
     # Build a list of just the browser names for the Kodi select dialog.
     browListNames=[brow.description for brow in platformBrowList]
+    # Calculate the list index if a selection was previously made.
+    curBrowIndex=next((idx for idx,brow in enumerate(platformBrowList) if brow.FQFN==curBrowFQFN),-1)
     
     selValue=-1
     while selValue == -1:
@@ -133,15 +140,15 @@ def setBrowser(sFieldID):
                     # curProfile now set to the desired isolated profile. Create it.
                     # Call the browser specific profile creation function.
                     match platformBrowList[selValue].name.lower():
-                        case "firefox":
+                        case "firefox" | "librewolf":
                             # Call the Firefox specific initialization code.
                             browserList.createProfileFirefox(curProfile,selValue)
-                        case "chrome":
+                        case "chrome" | "msedge" | "brave" |"opera" | "vivaldi" | "midori":
                             # Call the Chrome specific initialization code.
                             browserList.createProfileChrome(curProfile,selValue)
-                        case "msedge":
-                            # Call the Edge specific initialization code.
-                            browserList.createProfileEdge(curProfile,selValue)
+                        case "epiphany":
+                            # Call the WebKit specific initialization code.
+                            browserList.createProfileWebkit(curProfile,selValue)
                         case _:
                             xbmcgui.Dialog().ok(addon_name,f"{translation(30031)}{platformBrowList[selValue].name}")
                             return
@@ -151,8 +158,8 @@ def setBrowser(sFieldID):
                 # Final validation check prior to saving
                 if (selValue != -1):
                     # Save the selected browser information into the settings.
-                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].name)
-                    addon.setSettingInt(id=sFieldIndexID,value=selValue)
+                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].description)
+                    addon.setSetting(id=sFieldFQFN,value=platformBrowList[selValue].FQFN)
                     addon.setSetting(id=sFieldProfilePath,value=curProfile)
                     if curProfile:
                         addon.setSetting(id="BrowserProfileButton",value="Select to Show")
@@ -164,26 +171,35 @@ def setBrowser(sFieldID):
             break
     # End of while loop
 
-def browserCommandLine(selBrowser):
-    # This functon forms and returns the command line options for the
-    # selected browser.
-    profile = ""
-    if (browserProfile):
-        profile = selBrowser.profile+browserProfile
+def browserOptions(selBrowser):
+    # This functon returns a list with the selected options for the browser.
+    browOpts=[]
+    if (browserProfile) and (selBrowser.profile):
+        if selBrowser.profile[-1]=="=":
+            browOpts.append(selBrowser.profile+browserProfile)
+        else:
+            browOpts.append(selBrowser.profile)
+            browOpts.append(browserProfile)
     if (useKiosk=="yes") and (selBrowser.kiosk):
-        kiosk =selBrowser.kiosk
-    else:
-        kiosk=""
+        browOpts.append(selBrowser.kiosk)
     if (userAgent) and (selBrowser.agent):
-        agent = selBrowser.agent+'"'+userAgent+'" '
-    else:
-        agent=""
-    return profile+agent+selBrowser.extra+kiosk
+        if selBrowser.agent[-1]=="=":
+            browOpts.append(selBrowser.agent+userAgent)
+        else:
+            browOpts.append(selBrowser.agent)
+            browOpts.append(userAgent)
+    if (selBrowser.extra):
+        # Unpack the grouped options.
+        browOpts.extend(shlex.split(selBrowser.extra))
+    return browOpts
 
 def browserLaunch(url,stopPlayback):
     # This function formats an execution string to the target browser
     # and passes the parameters to display the desired website.
-    
+    if IsWebPDB:
+        pass # needed to complete if statement when debugging is disabled.
+        #web_pdb.set_trace()
+
 ## TF 02/2026 Enhance launcher to support android TV devices.
 
     if stopPlayback == "yes":
@@ -202,31 +218,34 @@ def browserLaunch(url,stopPlayback):
         selBrowser=readSettings()
 
     # Launch the selected browser based on the operating system in use.
-    if platformID in ['system.platform.windows','system.platform.linux']:
-        # Verify that the selBrowser.FQFN exists.
-        while not os.path.isfile(selBrowser.FQFN):
-            tMsg=translation(30017)+"\n"
-            tMsg=tMsg+"Browser Name: "+selBrowser.name+"\n"
-            tMsg=tMsg+"EXE: "+selBrowser.FQFN+"\n\n"
-            tMsg=tMsg+translation(30016)
-            tDlgRC=xbmcgui.Dialog().yesno(addon_name,tMsg,translation(30001),translation(30002),0,xbmcgui.DLG_YESNO_YES_BTN)
-            # If user chooses to cancel exit the addon completely
-            if not tDlgRC:
-                return
-            # Open the settings for the addon to allow the user to adjust the configuration.
-            addon.openSettings()
-            selBrowser=readSettings()
-        # Append the launcher options
-        browRun=[selBrowser.FQFN,browserCommandLine(selBrowser),url]
-        # DEBUGGING # xbmcgui.Dialog().ok(addon_name,browRun)
-        xbmcgui.Dialog().notification("Browser Launcher",f"Starting the {selBrowser.name} web browser..",xbmcgui.NOTIFICATION_INFO)
-        subprocess.Popen(browRun)
+    match platformID:
+        case 'system.platform.windows':
+            # Append the launcher options
+            browOpts=browserOptions(selBrowser)
+            browRun=[selBrowser.FQFN, *browOpts, url]
+            # DEBUGGING # xbmcgui.Dialog().ok(addon_name,browRun)
+            xbmcgui.Dialog().notification("Browser Launcher",f"Starting the {selBrowser.name} web browser..",xbmcgui.NOTIFICATION_INFO)
+            subprocess.Popen(browRun)
+
+        case 'system.platform.linux':
+            # For linux, need to determine if Kodi is running in a Flatpak sandbox and adjust 
+            # execution calls accordingly.
+
+            # Append the launcher options
+            browOpts=browserOptions(selBrowser)
+            browRun=[selBrowser.FQFN, *browOpts, url]
+            # See if running in a Linux Flatpak sandbox.
+            if xbmcvfs.exists("/.flatpak-info"):
+                browRun = ["flatpak-spawn","--host", *browRun]
+            # DEBUGGING # xbmcgui.Dialog().ok(addon_name,browRun)
+            xbmcgui.Dialog().notification("Browser Launcher",f"Starting the {selBrowser.name} web browser..",xbmcgui.NOTIFICATION_INFO)
+            subprocess.Popen(browRun)
         
-    elif platformID=='system.platform.android':
-        # See if we can launch the android browser.
-        xbmc.executebuiltin('StartAndroidActivity("'+selBrowser.FQFN+'","android.intent.action.VIEW","","'+url+'")')
-    else:
-        xbmcgui.Dialog().ok(addon_name,translation(30026)+'!')
+        case 'system.platform.android':
+            # See if we can launch the android browser.
+            xbmc.executebuiltin('StartAndroidActivity("'+selBrowser.FQFN+'","android.intent.action.VIEW","","'+url+'")')
+        case _:
+            xbmcgui.Dialog().ok(addon_name,translation(30026)+'!')
 
 # Main execution block starts here
 

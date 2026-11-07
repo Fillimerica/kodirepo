@@ -2,9 +2,10 @@
 # currently supports Windows and Linux.
 
 class instBrowType:
-    def __init__(self,name,location):
+    def __init__(self,name,location,description):
         self.name=name
         self.location=location
+        self.description=description
 
 def getInstalledBrowsers(platformID):
     match platformID:

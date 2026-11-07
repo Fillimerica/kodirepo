@@ -95,6 +95,22 @@ msgctxt "#30031"
 msgid "Unsupported browser selected. Browser Name="
 msgstr "" 
 
+msgctxt "#30032"
+msgid "Unknown installed browser detected. Skipping. Browser Name="
+msgstr "" 
+
+msgctxt "#30033"
+msgid "Unsupported installed browser detected. Skipping. Browser Name="
+msgstr "" 
+
+msgctxt "#30034"
+msgid "The installed browser list is empty and kodi is running in a flatpak sandbox.\nCheck the flatpak overrides for Kodi."
+msgstr "" 
+
+msgctxt "#30035"
+msgid "Profile configuration is finished."
+msgstr "" 
+
 msgctxt "#30040"
 msgid "Override default profile path"
 msgstr "" 

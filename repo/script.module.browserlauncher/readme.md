@@ -1,6 +1,6 @@
 ### Kodi Script Addon to Display Websites in a Browser
 
-This addon supports the launching of a web-url in the local system browser. Currently works on Windows and Android TV Boxes.
+This addon supports the launching of a web-url in the local system browser. Currently works on Windows, Linux (ppa,source & Flatpak) and Android TV Boxes.
 
 Tested with Kodi Omega and Piers
 
@@ -40,7 +40,24 @@ Repository link:  https://fillimerica.github.io/kodirepo/
 
 ### Configuration
 
-To configure the local browser that will be used, go to Settings > Add-ons > My Add-ons > Program add-ons, and select "Browser Launcher" from the list. Then Choose the Configure Option Button.
+> [!IMPORTANT]
+> **<u>Applies to Linux Flatpak Kodi Installations Only:</u>**
+>
+> This addon **REQUIRES** that the Flatpak configuration for the Kodi application be modified so that the addon can discover and interact with web browsers installed in the operating system.
+>
+> Execute the following command in the linux terminal to modify the flatpak permissions for the Kodi software:
+>
+> `sudo flatpak override tv.kodi.Kodi --talk-name=org.freedesktop.Flatpak`
+>
+> This command must be run once after the Kodi Software is installed prior to using or configuring any addon that requires it.
+
+
+
+To configure the local browser that will be used:
+
+1. Go to Settings > Add-ons > My Add-ons > Program add-ons, and select "Browser Launcher" from the list. 
+
+2. Then Choose the Configure Option Button.
 
 #### Usage
 

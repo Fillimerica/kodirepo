@@ -43,6 +43,8 @@
 			</group>
 			<group id="2" label="30012">
 				<setting id="Browser" label="30013" type="string" help="30076">
+				<!-- This is the browser selection button. After selection it is updated to display -->
+				<!-- the descriptive name of the browser to the user. -->
 					<level>0</level>
 					<default/>
 					<constraints>
@@ -52,15 +54,6 @@
 						<data>RunScript(script.module.browserlauncher,setting=Browser)</data>
 					</control>
 				</setting>
-				<setting id="BrowserIndex" type="integer" label="30013" help="">
-				<!-- This setting is internal to the system and are not visible to the user. -->
-				<!-- It is managed by the script, and can be read by parent modules -->
-					<level>0</level>
-					<default>-1</default>
-					<visible>false</visible>
-					<control type="edit" format="integer">
-					</control>
-				</setting>
 				<setting id="BrowserProfileButton" type="string" label="30050" help="">
 					<level>0</level>
 					<default>-not configured-</default>
@@ -68,9 +61,17 @@
 						<data>RunScript(script.module.browserlauncher,setting=BrowserProfile)</data>
 					</control>
 				</setting>
+<!-- The following settings are internal to the addon and are not visible to the user -->
+<!-- They are managed by the script, and can be read by parent modules -->
+				<setting id="BrowserFQFN" type="string" label="" help="">
+				<!-- Holds the operating system path and name of the browser to execute. -->
+					<level>0</level>
+					<default>-not configured-</default>
+					<visible>false</visible>
+					<control type="edit" format="string">
+					</control>
+				</setting>
 				<setting id="BrowserProfile" type="string" label="" help="">
-				<!-- This setting is internal to the system and are not visible to the user. -->
-				<!-- It is managed by the script, and can be read by parent modules -->
 					<level>0</level>
 					<default>-not configured-</default>
 					<visible>false</visible>

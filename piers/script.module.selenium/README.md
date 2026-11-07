@@ -8,6 +8,17 @@ This addon includes a custom setup routine, based on Kodi's settings.xml but ext
 Note: This addon is a library and may be installed automatically as a dependency of another addon. 
 The addon can also be installed prior to addons that depend on it if desired. The benefit of this approach is that the browser configuration can be setup before the library is needed.
 
+> [!IMPORTANT]
+> **<u>Applies to Linux Flatpak Kodi Installations Only:</u>**
+>
+> This addon **REQUIRES** that the Flatpak configuration for the Kodi application be modified so that the addon can discover and interact with web browsers installed in the operating system.
+>
+> Execute the following command in the linux terminal to modify the flatpak permissions for the Kodi software:
+>
+> `sudo flatpak override tv.kodi.Kodi --talk-name=org.freedesktop.Flatpak`
+>
+> This command must be run once after the Kodi Software is installed prior to using or configuring any addon that requires it.
+
 ##### Proactive Addon Installation
 
 <u>Method 1: From the TJF Repository</u>

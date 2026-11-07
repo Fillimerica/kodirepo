@@ -25,6 +25,7 @@ IGNORE = [
     "thumbs.db",
     ".idea",
     "venv",
+    "__pycache_"
 ]
 _COLOR_ESCAPE = "\x1b[{}m"
 _COLORS = {

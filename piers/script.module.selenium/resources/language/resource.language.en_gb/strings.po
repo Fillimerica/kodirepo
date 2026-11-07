@@ -24,7 +24,7 @@ msgid "Yes"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Cancel Setup"
+msgid "Cancel"
 msgstr ""
 
 msgctxt "#30004"
@@ -76,7 +76,7 @@ msgid "Unsupported Operating System Platform."
 msgstr "" 
 
 msgctxt "#30027"
-msgid "Unhandled error during prifile creation. Settings have not been saved."
+msgid "Unhandled error during profile creation. Settings have not been saved."
 msgstr "" 
 
 msgctxt "#30028"
@@ -93,6 +93,26 @@ msgstr ""
 
 msgctxt "#30031"
 msgid "Unsupported browser selected. Browser Name="
+msgstr "" 
+
+msgctxt "#30032"
+msgid "Unknown installed browser detected. Skipping. Browser Name="
+msgstr "" 
+
+msgctxt "#30033"
+msgid "Unsupported installed browser detected. Skipping. Browser Name="
+msgstr "" 
+
+msgctxt "#30034"
+msgid "The installed browser list is empty and kodi is running in a flatpak sandbox.\nCheck the flatpak overrides for Kodi."
+msgstr "" 
+
+msgctxt "#30035"
+msgid "Profile configuration is finished."
+msgstr "" 
+
+msgctxt "#30036"
+msgid "Some of the installed browsers have been excluded from selection.\nSelenium only supports Chrome,Firefox, and Edge."
 msgstr "" 
 
 msgctxt "#30040"
@@ -114,6 +134,18 @@ msgstr ""
 msgctxt "#30050"
 msgid "Profile Path:"
 msgstr "" 
+
+msgctxt "#30060"
+msgid "Use custom Browser/script path"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Browser/script path"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Use an isolated user profile?"
+msgstr ""
 
 # Help messages section.
 

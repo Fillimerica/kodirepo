@@ -3,7 +3,9 @@
 # This allows the script setup to handle highly customized setup steps while
 # still presenting the user with a standard Kodi setup diulog.
 # Written by Thomas Filliman
-# Version 1.0 - October 2026
+# Operating system support: Windows (32 & 64 bit), Linux 
+
+# Version 1.1 - November 2026
 
 import sys
 import os
@@ -28,40 +30,60 @@ addon_id = addon.getAddonInfo('id')
 addon_path=xbmcvfs.translatePath(addon.getAddonInfo('path'))
 addon_data_path=xbmcvfs.translatePath(f"special://profile/addon_data/{addon_id}")
 
-platformID=browserList.getPlatformID()
-platformBrowList=browserList.getBrowserList(platformID)
+from browserList import platformID,platformBrowList,IsFlatpak
 
 # Define support function shortcuts. (translation is a function, even though it looks like a variable)
 translation=addon.getLocalizedString
 
 def setBrowser(sFieldID):
     # This specialized function reads the list of browsers for the current platform and allows the user to select one.
-    # Interaction with the settings.xml file uses hard-coded field ID suffix of "Index"
-    # Get the current value of sFieldID (str)
+    
     if IsWebPDB:
         pass # needed to complete if statement when debugging is disabled.
         #web_pdb.set_trace()
     
-    sFieldIndexID=sFieldID+"Index"
+    # Define the related settings fields in settings.xml
+    sFieldFQFN=sFieldID+"FQFN"
     sFieldProfilePath=sFieldID+"Profile"
+    sFieldBrowType=sFieldID+"Type"
     
     # Retrieve the current browser index, in case there is already a configured browser for this addon.
-    isValid, curBrowIndexStr=guiSettings.getGuiSetting(sFieldIndexID)
+    isValid, curBrowFQFN=guiSettings.getGuiSetting(sFieldFQFN)
     if not isValid:
-        xbmc.log(f"{translation(30028)}{sFieldIndexID}",xbmc.LOGERROR)
+        xbmc.log(f"{translation(30028)}{sFieldFQFN}",xbmc.LOGERROR)
         return
-    curBrowIndex=int(curBrowIndexStr)
-    if curBrowIndex < 0:
+    if curBrowFQFN=="-not configured-":
         curProfile=""
     else:
         isValid, curProfile=guiSettings.getGuiSetting(sFieldProfilePath)
         if not isValid:
             xbmc.log(f"{translation(30028)}{sFieldProfilePath}",xbmc.LOGERROR)
             return
+    # platformBrowList is initialized upon module load. If it is empty and IsFlatpak is true, then 
+    # perhaps the override has not been configured. Log and advise the user.
+    if not platformBrowList:
+        if IsFlatpak:
+            xbmc.log(f"{translation(30034)}{sFieldProfilePath}",xbmc.LOGERROR)
+            xbmcgui.Dialog().ok(addon_name,translation(30034))
 
-    # Build a list of just the browser names for the Kodi select dialog.
-    browListNames=[brow.description for brow in platformBrowList]
-    
+    # Selenium only supports specific browsers, so need to filter out all the other
+    # installed browsers. However, still need to retain the correct index into the
+    # master platformBrowList so that the browser type and options can be saved.
+    browListNames=[]
+    browListIndex=[]
+    curBrowIndex=-1
+    for idx,brow in enumerate(platformBrowList):
+        if brow.name.lower() in ["chrome","firefox","msedge"]:
+            browListNames.append(brow.description)
+            browListIndex.append(idx)
+            # See if there is a current selection by matching FQFN values.
+            if (brow.FQFN==curBrowFQFN) and (curBrowIndex==-1):
+                curBrowIndex=len(browListIndex)-1 # Relative index into sub-list for kodi select.
+
+    # If some installed browsers were excluded, advise the user.
+    if (len(browListNames) != len(platformBrowList)):
+        xbmcgui.Dialog().ok(addon_name,translation(30036))
+
     selValue=-1
     while selValue == -1:
         # Obtain the desired browser selection from the Kodi GUI 
@@ -77,6 +99,9 @@ def setBrowser(sFieldID):
         else:
             # User selected a browser. If it has changed or a profile does not exist, create the profile path.
             if (not curProfile) or (selValue != curBrowIndex):
+                # Re-assign selValue to the actual index of the selected browser in platformBrowList
+                selValue=browListIndex[selValue]
+                
                 # Need to create the profile path for the selected browser.
                 # See if a custom path override has been selected.
                 isValid, proPathOverride=guiSettings.getGuiSetting("ProfilePathOverride")
@@ -96,15 +121,15 @@ def setBrowser(sFieldID):
                 # curProfile now set to the desired isolated profile. Create it.
                 # Call the browser specific profile creation function.
                 match platformBrowList[selValue].name.lower():
-                    case "firefox":
+                    case "firefox" | "librewolf":
                         # Call the Firefox specific initialization code.
                         browserList.createProfileFirefox(curProfile,selValue)
-                    case "chrome":
+                    case "chrome" | "msedge" | "brave" |"opera" | "vivaldi" | "midori":
                         # Call the Chrome specific initialization code.
                         browserList.createProfileChrome(curProfile,selValue)
-                    case "msedge":
-                        # Call the Edge specific initialization code.
-                        browserList.createProfileEdge(curProfile,selValue)
+                    case "epiphany":
+                        # Call the WebKit specific initialization code.
+                        browserList.createProfileWebkit(curProfile,selValue)
                     case _:
                         xbmcgui.Dialog().ok(addon_name,f"{translation(30031)}{platformBrowList[selValue].name}")
                         return
@@ -112,10 +137,14 @@ def setBrowser(sFieldID):
                 # Final validation check prior to saving
                 if (curProfile) and (selValue != -1):
                     # Save the selected browser information into the settings.
-                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].name)
-                    addon.setSettingInt(id=sFieldIndexID,value=selValue)
+                    addon.setSetting(id=sFieldID,value=platformBrowList[selValue].description)
+                    addon.setSetting(id=sFieldFQFN,value=platformBrowList[selValue].FQFN)
                     addon.setSetting(id=sFieldProfilePath,value=curProfile)
-                    addon.setSetting(id="BrowserProfileButton",value="Select to Show")
+                    addon.setSetting(id=sFieldBrowType,value=platformBrowList[selValue].name)
+                    if curProfile:
+                        addon.setSetting(id="BrowserProfileButton",value="Select to Show")
+                    else:
+                        addon.setSetting(id="BrowserProfileButton",value="-browser default-")
                 else:
                     xbmcgui.Dialog().ok(addon_name,translation(30027))
             # Exit the while loop after the profile was created or left unchanged     
@@ -145,7 +174,6 @@ if len(sys.argv) > 1:
                 elif param1[1]=="BrowserProfile":
                     # This call displays the full BrowserProfile path in a dialog box 
                     # large enough to show the entire value.
-                    #web_pdb.set_trace()
                     isValid, browserProfile=guiSettings.getGuiSetting("BrowserProfile")
                     if isValid:
                         xbmcgui.Dialog().ok("Profile Path",browserProfile)

@@ -14,12 +14,12 @@
 					<control type="button" format="action">
 					</control>
 				</setting>
-				<setting id="ProfilePathOverride" type="boolean" label="30040" help="30001">
+				<setting id="ProfilePathOverride" type="boolean" label="30040" help="30071">
 					<level>0</level>
 					<default>false</default>
 					<control type="toggle"/>
 				</setting>
-				<setting id="ProfilePathCustom" type="path" label="30041" help="30002">
+				<setting id="ProfilePathCustom" type="path" label="30041" help="30072">
 					<level>0</level>
 					<default>n/a</default>
 					<constraints>
@@ -34,23 +34,15 @@
 				</setting>
 			</group>
 			<group id="2" label="30012">
-				<setting id="Browser" label="30013" type="string">
-					<level>0</level>
+				<setting id="Browser" label="30013" type="string" help="30076">
+				<!-- This is the browser selection button. After selection it is updated to display -->
+				<!-- the descriptive name of the browser to the user. -->					<level>0</level>
 					<default/>
 					<constraints>
 						<allowempty>true</allowempty>
 					</constraints>
 					<control type="button" format="action">
 						<data>RunScript(script.module.selenium,setting=Browser)</data>
-					</control>
-				</setting>
-				<setting id="BrowserIndex" type="integer" label="30013" help="">
-				<!-- This setting is internal to the system and are not visible to the user. -->
-				<!-- It is managed by the script, and can be read by parent modules -->
-					<level>0</level>
-					<default>-1</default>
-					<visible>false</visible>
-					<control type="edit" format="integer">
 					</control>
 				</setting>
 				<setting id="BrowserProfileButton" type="string" label="30050" help="">
@@ -60,9 +52,24 @@
 						<data>RunScript(script.module.selenium,setting=BrowserProfile)</data>
 					</control>
 				</setting>
+<!-- The following settings are internal to the addon and are not visible to the user -->
+<!-- They are managed by the script, and can be read by parent modules -->
+				<setting id="BrowserFQFN" type="string" label="" help="">
+				<!-- Holds the operating system path and name of the browser to execute. -->
+					<level>0</level>
+					<default>-not configured-</default>
+					<visible>false</visible>
+					<control type="edit" format="string">
+					</control>
+				</setting>
 				<setting id="BrowserProfile" type="string" label="" help="">
-				<!-- This setting is internal to the system and are not visible to the user. -->
-				<!-- It is managed by the script, and can be read by parent modules -->
+					<level>0</level>
+					<default>-not configured-</default>
+					<visible>false</visible>
+					<control type="edit" format="string">
+					</control>
+				</setting>
+				<setting id="BrowserType" type="string" label="" help="">
 					<level>0</level>
 					<default>-not configured-</default>
 					<visible>false</visible>

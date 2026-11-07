@@ -742,7 +742,7 @@ def initBrowser():
     global BROWSER_TYPE
     global BROWSER_PROFILE
     
-    BROWSER_TYPE=seleniumSettings.getSetting("Browser")
+    BROWSER_TYPE=seleniumSettings.getSetting("BrowserType")
     while BROWSER_TYPE=="":
         # See if the user wants to configure the selenium browser.
         rc=xbmcgui.Dialog().yesno(ADDON_NAME,translate(30010),translate(30002),translate(30001),0,xbmcgui.DLG_YESNO_YES_BTN)
@@ -750,7 +750,7 @@ def initBrowser():
             return False
         # Try to invoke the selenium configuration module for on-the-fly setup.
         seleniumSettings.openSettings()
-        BROWSER_TYPE=seleniumSettings.getSetting("Browser")
+        BROWSER_TYPE=seleniumSettings.getSetting("BrowserType")
     # Configuration is valid, get the actual profile path to use.
     BROWSER_PROFILE=seleniumSettings.getSetting("BrowserProfile")
     return True
