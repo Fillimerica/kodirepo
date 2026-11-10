@@ -32,14 +32,7 @@ class settingsMapType:
         self.sCheck=sCheck
 
 SettingsMap: list[settingsMapType] = [
-    settingsMapType(name="TopControlMarker",offset=0,ctrlType="label2",sCheck="TopControlSanityCheck"),
-    settingsMapType(name="ProfilePathOverride",offset=1,ctrlType="bool"),
-    settingsMapType(name="ProfilePathCustom",offset=2,ctrlType="label2",sCheck=translate(30041)),
-    settingsMapType(name="ProfileSuffix",offset=3,ctrlType="text"),
-    settingsMapType(name="Browser",offset=6,ctrlType="label2",sCheck=translate(30013)),
-    settingsMapType(name="BrowserIndex",offset=7,ctrlType="text"),
-    settingsMapType(name="BrowserProfileButton",offset=8,ctrlType="label2",sCheck=translate(30050)),
-    settingsMapType(name="BrowserProfile",offset=9,ctrlType="text")
+    settingsMapType(name="TopControlMarker",offset=0,ctrlType="label2",sCheck="TopControlSanityCheck")
     ]
 
 # Addon global constants
